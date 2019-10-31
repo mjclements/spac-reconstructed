@@ -7,11 +7,13 @@
 		<link type="text/css" rel="stylesheet" href="main.css">
 	</head>
 	<body>
+    <!--
 		<div id="info">
 			<a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> -
 			STL loader test by <a href="https://github.com/aleeper" target="_blank" rel="noopener">aleeper</a>.<br/>
 			PR2 head from <a href="http://www.ros.org/wiki/pr2_description">www.ros.org</a>
-		</div>
+    </div>
+  -->
 
 		<script type="module">
 
@@ -25,7 +27,7 @@
 
 			var container;//, stats;
 
-			var camera, cameraTarget, scene, renderer;
+			var camera, cameraTarget, scene, renderer, mesh;
 
 			init();
 			animate();
@@ -38,12 +40,12 @@
 				camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 1, 10000 );
 				camera.position.set( -500, 300, 600);
 
-				cameraTarget = new THREE.Vector3( 85, -60, 0 ); //-0.25
+				cameraTarget = new THREE.Vector3( 85, -25, 0 ); //-0.25
 				scene = new THREE.Scene();
 				//scene.background = new THREE.Color( 0x72645b );
 				//scene.fog = new THREE.Fog( 0x72645b, 2, 15 );
 
-
+        
 				// Ground
 
 				var plane = new THREE.Mesh(
@@ -55,6 +57,7 @@
 				scene.add( plane );
 
 				plane.receiveShadow = true;
+        
 
 
 				// ASCII file
@@ -63,9 +66,9 @@
 				loader.load( './models/stl/full_prison.stl', function ( geometry ) {
 
 					var material = new THREE.MeshPhongMaterial( { color: 0xababab, specular: 0x111111, shininess: 200 } );
-					var mesh = new THREE.Mesh( geometry, material );
+					mesh = new THREE.Mesh( geometry, material ); // redeclared globally
 
-					mesh.position.set( 0, - 0.25, 0.6 );
+					mesh.position.set( 300, - 0.25, -800 ); //z= .6
 					mesh.rotation.set( 0, - Math.PI / 2, 0 );
 					mesh.scale.set( 0.05, 0.05, 0.05 );
 
@@ -216,6 +219,10 @@
 			function render() {
 
 				var timer = Date.now() * 0.0005;
+
+        scene.rotation.y = timer;
+        //mesh.rotation.y = timer ;//% 180;//Math.cos( timer ) * 1;
+				//camera.position.z = Math.sin( timer ) * 3;
 
 
 				camera.lookAt( cameraTarget );
