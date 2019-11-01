@@ -27,7 +27,9 @@
 
 			var container;//, stats;
 
-			var camera, cameraTarget, scene, renderer, mesh;
+      var camera, cameraTarget, scene, renderer, mesh, mouse, raycaster;
+      
+      var mouse = new THREE.Vector2(), INTERSECTED;
 
 			init();
 			animate();
@@ -46,34 +48,28 @@
 				//scene.fog = new THREE.Fog( 0x72645b, 2, 15 );
 
         
-				// Ground
 
-				var plane = new THREE.Mesh(
-					new THREE.PlaneBufferGeometry( 40, 40 ),
-					new THREE.MeshPhongMaterial( { color: 0x999999, specular: 0x101010 } )
-				);
-				plane.rotation.x = - Math.PI / 2;
-				//plane.position.y = - 0.5;
-				scene.add( plane );
-
-				plane.receiveShadow = true;
-        
-
+        document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+        raycaster = new THREE.Raycaster();
 
 				// ASCII file
 
 				var loader = new STLLoader();
 				loader.load( './stl/full_prison_assem.STL', function ( geometry ) {
 
-					var material = new THREE.MeshPhongMaterial( { color: 0xababab, specular: 0x111111, shininess: 200 } );
+          var material = new THREE.MeshPhongMaterial( { color: 0xababab, specular: 0x111111, shininess: 200, transparent: true  } );
+          
+         // material.transparent = true;
+          material.opacity = .5;
+
 					mesh = new THREE.Mesh( geometry, material ); // redeclared globally
 
 					mesh.position.set( 0, 0, 0 ); //z= .6 300 -.25 800
-					mesh.rotation.set( 0, - Math.PI / 2, 0 );
+					//mesh.rotation.set( 0, - Math.PI / 2, 0 );
 					mesh.scale.set( 0.05, 0.05, 0.05 );
 
 					mesh.castShadow = true;
-					mesh.receiveShadow = true;
+          mesh.receiveShadow = true;
 
 					scene.add( mesh );
 
@@ -87,7 +83,7 @@
 					mesh = new THREE.Mesh( geometry, material ); // redeclared globally
 
 					mesh.position.set( 0, 0, 0 ); //z= .6
-					mesh.rotation.set( 0, - Math.PI / 2, 0 );
+					//mesh.rotation.set( 0, - Math.PI / 2, 0 );
 					mesh.scale.set( 0.05, 0.05, 0.05 );
 
 					mesh.castShadow = true;
@@ -96,66 +92,6 @@
 					scene.add( mesh );
 
 				} );
-
-        /*
-				// Binary files
-
-				var material = new THREE.MeshPhongMaterial( { color: 0xAAAAAA, specular: 0x111111, shininess: 200 } );
-
-				loader.load( './models/stl/binary/pr2_head_pan.stl', function ( geometry ) {
-
-					var mesh = new THREE.Mesh( geometry, material );
-
-					mesh.position.set( 0, - 0.37, - 0.6 );
-					mesh.rotation.set( - Math.PI / 2, 0, 0 );
-					mesh.scale.set( 2, 2, 2 );
-
-					mesh.castShadow = true;
-					mesh.receiveShadow = true;
-
-					scene.add( mesh );
-
-				} );
-
-				loader.load( './models/stl/binary/pr2_head_tilt.stl', function ( geometry ) {
-
-					var mesh = new THREE.Mesh( geometry, material );
-
-					mesh.position.set( 0.136, - 0.37, - 0.6 );
-					mesh.rotation.set( - Math.PI / 2, 0.3, 0 );
-					mesh.scale.set( 2, 2, 2 );
-
-					mesh.castShadow = true;
-					mesh.receiveShadow = true;
-
-					scene.add( mesh );
-
-				} );
-
-				// Colored binary STL
-				loader.load( './models/stl/binary/colored.stl', function ( geometry ) {
-
-					var meshMaterial = material;
-					if ( geometry.hasColors ) {
-
-						meshMaterial = new THREE.MeshPhongMaterial( { opacity: geometry.alpha, vertexColors: THREE.VertexColors } );
-
-					}
-
-					var mesh = new THREE.Mesh( geometry, meshMaterial );
-
-					mesh.position.set( 0.5, 0.2, 0 );
-					mesh.rotation.set( - Math.PI / 2, Math.PI / 2, 0 );
-					mesh.scale.set( 0.3, 0.3, 0.3 );
-
-					mesh.castShadow = true;
-					mesh.receiveShadow = true;
-
-					scene.add( mesh );
-
-				} );
-
-        */
 
 				// Lights
 
@@ -176,24 +112,23 @@
 
 				container.appendChild( renderer.domElement );
 
-
 				// controls
-  
 				var controls = new OrbitControls( camera, renderer.domElement );
 				controls.maxPolarAngle = Math.PI * 0.5;
-				controls.minDistance = 1000;
+				controls.minDistance = 500;
 				controls.maxDistance = 5000;
-
-				// stats
-
-				//stats = new Stats();
-				//container.appendChild( stats.dom );
-
-				//
 
 				window.addEventListener( 'resize', onWindowResize, false );
 
+      }
+      
+
+			function onDocumentMouseMove( event ) {
+				event.preventDefault();
+				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 			}
+
 
 			function addShadowedLight( x, y, z, color, intensity ) {
 
@@ -237,16 +172,29 @@
 			function render() {
 
 				var timer = Date.now() * 0.0005;
-
         scene.rotation.y = timer;
-        //mesh.rotation.y = timer ;//% 180;//Math.cos( timer ) * 1;
-				//camera.position.z = Math.sin( timer ) * 3;
-
 
 				camera.lookAt( cameraTarget );
+        
+        raycaster.setFromCamera( mouse, camera );
+        var intersects = raycaster.intersectObjects( scene.children );
+        
+				if ( intersects.length > 0 ) {
+					if ( INTERSECTED != intersects[ 0 ].object ) {
+						if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+						INTERSECTED = intersects[ 0 ].object;
+						INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+						INTERSECTED.material.emissive.setHex( 0xff0000 );
+
+          }
+
+        } else {
+					if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+					INTERSECTED = null;
+				}
+
 
 				renderer.render( scene, camera );
-
 			}
 
 		</script>
