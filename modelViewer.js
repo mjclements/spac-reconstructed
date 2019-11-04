@@ -5,13 +5,14 @@ import { STLLoader } from './examples/jsm/loaders/STLLoader.js'
 
 import { OrbitControls } from './examples/jsm/controls/OrbitControls.js'
 
-var container; var loader; var clickable = []
+var container, clickable = []
 
 var camera, cameraTarget, scene, renderer, mesh, mouse, raycaster
 
 var mouse = new THREE.Vector2(); var INTERSECTED
 
 init()
+getData()
 animate()
 
 function init () {
@@ -21,13 +22,11 @@ function init () {
   camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
   camera.position.set(-500, 300, 600)
 
-  cameraTarget = new THREE.Vector3(85, -25, 0)
+  cameraTarget = new THREE.Vector3(0, 25, 0) // x85
   scene = new THREE.Scene()
 
   document.addEventListener('mousemove', onDocumentMouseMove, false)
   raycaster = new THREE.Raycaster()
-
-  getData()
 
   // Lights
   scene.add(new THREE.HemisphereLight(0x443333, 0x111122))
@@ -49,8 +48,8 @@ function init () {
   // controls
   var controls = new OrbitControls(camera, renderer.domElement)
   controls.maxPolarAngle = Math.PI * 0.5
-  controls.minDistance = 500
-  controls.maxDistance = 5000
+  controls.minDistance = 100
+  controls.maxDistance = 2000
 
   window.addEventListener('resize', onWindowResize, false)
 }
@@ -96,24 +95,24 @@ function getData () {
 }
 
 function loadModels (json) {
-  var loader = new STLLoader(); var name
+  var loader = new STLLoader(), name;
   json.files.forEach(function (element) {
     if (element.hasOwnProperty('clickable')) {
-      // console.log(element.clickable + " is clickable")
       clickable.push(element.clickable)
       name = element.clickable
-    } else {
-      // console.log(element.not_clickable + " is not clickable")
-      name = element.not_clickable
-    }
+    } else name = element.not_clickable  
 
     loader.load(name, function (geometry) {
-      var material = new THREE.MeshPhongMaterial({ color: 0xababab, specular: 0x111111, shininess: 200, transparent: true })
-      material.opacity = 0.5
+
+      if (!element.hasOwnProperty('clickable')) {
+        var material = new THREE.MeshPhongMaterial({ color: 0xababab, specular: 0x111111, shininess: 200, transparent: true })
+        material.opacity = 0.5
+      }
+      else var material = new THREE.MeshPhongMaterial({ color: 0xababab, specular: 0x111111, shininess: 200 }) 
 
       mesh = new THREE.Mesh(geometry, material) // declared globally
 
-      mesh.position.set(0, 0, 0) // z= .6 300 -.25 800
+      mesh.position.set(-75, 0, -17) 
       mesh.scale.set(0.05, 0.05, 0.05)
       mesh.castShadow = true
       mesh.receiveShadow = true
@@ -122,6 +121,13 @@ function loadModels (json) {
       // console.log(name + " has been loaded")
     })
   })
+
+  //*** for dev, remove
+  var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+  var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+  var cube = new THREE.Mesh( geometry, material );
+  scene.add( cube );
+  //*** 
 }
 
 function onWindowResize () {
@@ -146,7 +152,7 @@ function render () {
   raycaster.setFromCamera(mouse, camera)
   var intersects = raycaster.intersectObjects(scene.children)
 
-  if (intersects.length > 0) {
+  if (intersects.length > 0 ) {
     if (INTERSECTED != intersects[0].object) {
       if (INTERSECTED) INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
       INTERSECTED = intersects[0].object
