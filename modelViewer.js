@@ -5,9 +5,11 @@ import { STLLoader } from './examples/jsm/loaders/STLLoader.js'
 
 import { OrbitControls } from './examples/jsm/controls/OrbitControls.js'
 
+import { OutlineEffect } from './examples/jsm/effects/OutlineEffect.js';
+
 var container; var clickable = []
 
-var camera, cameraTarget, scene, renderer, mesh, mouse, raycaster
+var camera, cameraTarget, scene, renderer, mesh, mouse, raycaster, effect
 
 var mouse = new THREE.Vector2(); var INTERSECTED
 
@@ -47,6 +49,8 @@ function init () {
   renderer.gammaInput = true
   renderer.gammaOutput = true
   renderer.shadowMap.enabled = true
+
+  effect = new OutlineEffect( renderer );
 
   container.appendChild(renderer.domElement)
 
@@ -102,33 +106,35 @@ function getData () {
 }
 
 function loadModels (json) {
-  var solids = []
+  var materials = []
   var name
+
   json.files.forEach(function (element) {
     if (element.hasOwnProperty('clickable')) name = element.clickable
     else name = element.not_clickable
 
-
+    var loader = new STLLoader();
     loader.load(name, function (geometry) {
-      if (!element.hasOwnProperty('clickable')) {
-        var material = new THREE.MeshPhongMaterial({ color: 0x5a5d5e, specular: 0x111111,  shininess: 200, 
-           transparent: false,depthWrite: true/*, /*flatShading:true/*, side:THREE.DoubleSide*/})
-          //material.side = THREE.DoubleSide;
-          //material.emissive.setHex( emissiveDefault );
-          material.polygonOffset = true;
-          material.polygonOffsetFactor = -2; // positive value pushes polygon further away
-          material.polygonOffsetUnits = 1;
-          material.needsUpdate = true;
-          material.opacity = 1
-      } else {
-        var material = new THREE.MeshPhongMaterial({ color: 0xababab, specular: 0x111111,  shininess: 200/*,flatShading:true*/})
-      }
+        var materials = [];
+        var nGeometryGroups = geometry.groups.length;
+      
+      //  var colorMap = ...; // Some logic to index colors.
+      
+        for (var i = 0; i < nGeometryGroups; i++) {
+      
+      		var material = new THREE.MeshPhongMaterial({
+      			color: 0xffffff,
+      			wireframe: false
+      		});
+      
+        }
       
       materials.push(material);
       var mesh = new THREE.Mesh(geometry, materials);
       mesh.scale.set(0.019,0.02,0.02)
 
       scene.add( mesh )
+      console.log("hmmmmm")
 
        /*
 
