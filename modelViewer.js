@@ -33,11 +33,7 @@ function init () {
   scene.add(new THREE.HemisphereLight(0x443333, 0x111122))
 
   addShadowedLight(1, 1, 1, 0xffffff, 1.35)
-<<<<<<< Updated upstream
   addShadowedLight(0.5, 1, -1, 0xffaa00, 1)
-=======
-  addShadowedLight(0.5, 1, -1, 0xffffff, 1)
->>>>>>> Stashed changes
 
   var light = new THREE.AmbientLight( 0xffffff, .5 ); // soft white light
   scene.add( light );
@@ -113,7 +109,6 @@ function loadModels (json) {
     else name = element.not_clickable
 
 
-<<<<<<< Updated upstream
     loader.load(name, function (geometry) {
       if (!element.hasOwnProperty('clickable')) {
         var material = new THREE.MeshPhongMaterial({ color: 0x5a5d5e, specular: 0x111111,  shininess: 200, 
@@ -127,31 +122,6 @@ function loadModels (json) {
           material.opacity = 1
       } else {
         var material = new THREE.MeshPhongMaterial({ color: 0xababab, specular: 0x111111,  shininess: 200/*,flatShading:true*/})
-=======
-
-    console.log(name)
-    var loader = new STLLoader();
-    loader.load( name, function ( geometry ) {
-
-      
-       //var mesh = new THREE.Mesh( geometry, material );
-      
-       // For example:
-      
-        var materials = [];
-        var nGeometryGroups = geometry.groups.length;
-        console.log(nGeometryGroups)
-      
-        //var colorMap = ...; // Some logic to index colors.
-        var colorMap = [0x66f542,0xecb888,0x4287f5, 0x66f542, 0x66f542, 0x66f542, 0x66f542, 0x66f542, 0x66f542]
-      
-        for (var i = 0; i < nGeometryGroups; i++) {
-      
-      		var material = new THREE.MeshPhongMaterial({
-      			color: colorMap[i],
-      			wireframe: false
-      	});
->>>>>>> Stashed changes
       }
       
       materials.push(material);
