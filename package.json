@@ -96,5 +96,8 @@
       "build/three.module.js"
     ],
     "directories": {}
+  },
+  "dependencies": {
+    "mime": "^2.4.4"
   }
 }

@@ -30,10 +30,10 @@ function init () {
   raycaster = new THREE.Raycaster()
 
   // Lights
-  //scene.add(new THREE.HemisphereLight(0x443333, 0x111122))
+  scene.add(new THREE.HemisphereLight(0x443333, 0x111122))
 
-  //addShadowedLight(1, 1, 1, 0xffffff, 1.35)
-  //addShadowedLight(0.5, 1, -1, 0xffaa00, 1)
+  addShadowedLight(1, 1, 1, 0xffffff, 1.35)
+  addShadowedLight(0.5, 1, -1, 0xffaa00, 1)
 
   var light = new THREE.AmbientLight( 0x404040, 3 ); // soft white light
   scene.add( light );
@@ -112,14 +112,14 @@ function loadModels (json) {
     loader.load(name, function (geometry) {
       if (!element.hasOwnProperty('clickable')) {
         var material = new THREE.MeshPhongMaterial({ color: 0x5a5d5e, specular: 0x111111,  shininess: 200, 
-           transparent: true,depthWrite: false /*, /*flatShading:true/*, side:THREE.DoubleSide*/})
+           transparent: false,depthWrite: true/*, /*flatShading:true/*, side:THREE.DoubleSide*/})
           //material.side = THREE.DoubleSide;
           //material.emissive.setHex( emissiveDefault );
           material.polygonOffset = true;
           material.polygonOffsetFactor = -2; // positive value pushes polygon further away
           material.polygonOffsetUnits = 1;
           material.needsUpdate = true;
-          material.opacity = 0.6
+          material.opacity = 1
       } else {
         var material = new THREE.MeshPhongMaterial({ color: 0xababab, specular: 0x111111,  shininess: 200/*,flatShading:true*/})
       }
