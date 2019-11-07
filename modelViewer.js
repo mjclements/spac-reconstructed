@@ -22,7 +22,7 @@ function init () {
   camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
   camera.position.set(-500, 300, 600)
 
-  cameraTarget = new THREE.Vector3(0, 25, 0) // x85
+  cameraTarget = new THREE.Vector3(0, 0, 0)  //y = 25
   scene = new THREE.Scene()
   scene.background = new THREE.Color( 0xebf8fc );
 
@@ -33,9 +33,13 @@ function init () {
   scene.add(new THREE.HemisphereLight(0x443333, 0x111122))
 
   addShadowedLight(1, 1, 1, 0xffffff, 1.35)
+<<<<<<< Updated upstream
   addShadowedLight(0.5, 1, -1, 0xffaa00, 1)
+=======
+  addShadowedLight(0.5, 1, -1, 0xffffff, 1)
+>>>>>>> Stashed changes
 
-  var light = new THREE.AmbientLight( 0x404040, 3 ); // soft white light
+  var light = new THREE.AmbientLight( 0xffffff, .5 ); // soft white light
   scene.add( light );
 
   // renderer
@@ -102,13 +106,14 @@ function getData () {
 }
 
 function loadModels (json) {
-  var loader = new STLLoader(); var name
+  var solids = []
+  var name
   json.files.forEach(function (element) {
     if (element.hasOwnProperty('clickable')) name = element.clickable
     else name = element.not_clickable
 
-    console.log(name)
 
+<<<<<<< Updated upstream
     loader.load(name, function (geometry) {
       if (!element.hasOwnProperty('clickable')) {
         var material = new THREE.MeshPhongMaterial({ color: 0x5a5d5e, specular: 0x111111,  shininess: 200, 
@@ -122,22 +127,97 @@ function loadModels (json) {
           material.opacity = 1
       } else {
         var material = new THREE.MeshPhongMaterial({ color: 0xababab, specular: 0x111111,  shininess: 200/*,flatShading:true*/})
+=======
+
+    console.log(name)
+    var loader = new STLLoader();
+    loader.load( name, function ( geometry ) {
+
+      
+       //var mesh = new THREE.Mesh( geometry, material );
+      
+       // For example:
+      
+        var materials = [];
+        var nGeometryGroups = geometry.groups.length;
+        console.log(nGeometryGroups)
+      
+        //var colorMap = ...; // Some logic to index colors.
+        var colorMap = [0x66f542,0xecb888,0x4287f5, 0x66f542, 0x66f542, 0x66f542, 0x66f542, 0x66f542, 0x66f542]
+      
+        for (var i = 0; i < nGeometryGroups; i++) {
+      
+      		var material = new THREE.MeshPhongMaterial({
+      			color: colorMap[i],
+      			wireframe: false
+      	});
+>>>>>>> Stashed changes
       }
+      
+      materials.push(material);
+      var mesh = new THREE.Mesh(geometry, materials);
+      mesh.scale.set(0.019,0.02,0.02)
 
-      mesh = new THREE.Mesh(geometry, material) // declared globally
+      scene.add( mesh )
 
-      mesh.position.set(-43, 0, 1)
-      mesh.scale.set(0.019, 0.02, 0.02)
-      mesh.castShadow = true
-      mesh.receiveShadow = true
+       /*
 
-      if (element.hasOwnProperty('clickable')) clickable.push(mesh.uuid);
-
-      scene.add(mesh)
+      var material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
+      var mesh = new THREE.Mesh( geometry, material );
+      mesh.position.set( 0, - 0.25, 0.6 );
+      //mesh.rotation.set( 0, - Math.PI / 2, 0 );
+      mesh.scale.set( 0.019, 0.02, 0.02 );
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      scene.add( mesh );
+      */
+      
+    } );
+    
 
       // console.log(name + " has been loaded")
-    })
   })
+
+
+
+//binary, previously working
+// function loadModels (json) {
+//   var loader = new STLLoader(); var name
+//   json.files.forEach(function (element) {
+//     if (element.hasOwnProperty('clickable')) name = element.clickable
+//     else name = element.not_clickable
+
+//     console.log(name)
+
+//     loader.load(name, function (geometry) {
+//       if (!element.hasOwnProperty('clickable')) {
+//         var material = new THREE.MeshPhongMaterial({ color: 0x5a5d5e, specular: 0x111111,  shininess: 200, 
+//            transparent: true,/* depthWrite: false /*, /*flatShading:true/*/})
+
+//           material.polygonOffset = true;
+//           material.polygonOffsetFactor = -2; // positive value pushes polygon further away
+//           material.polygonOffsetUnits = 1;
+//           material.needsUpdate = true;
+//           material.opacity = 0.8
+//       } else {
+//         var material = new THREE.MeshPhongMaterial({ color: 0xababab, specular: 0x111111,  shininess: 200/*,flatShading:true*/})
+
+//       }
+
+//       mesh = new THREE.Mesh(geometry, material) // declared globally
+
+//       mesh.position.set(-43, 0, 1) 
+//       mesh.scale.set(0.019, 0.02, 0.02) 
+//       mesh.castShadow = true
+//       mesh.receiveShadow = true
+
+//       if (element.hasOwnProperty('clickable')) clickable.push(mesh.uuid);
+
+//       scene.add(mesh)
+
+//       // console.log(name + " has been loaded")
+//     })
+//   })
 
   //* ** for dev, remove
   var geometry = new THREE.BoxGeometry(1, 1, 1)
@@ -147,7 +227,7 @@ function loadModels (json) {
   //* **
 
   // ground
-  var texture = new THREE.TextureLoader().load('images/overview.JPG')
+  var texture = new THREE.TextureLoader().load('assets/images/overview.JPG')
   var material = new THREE.MeshLambertMaterial( { map: texture } );
   var groundMesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 200, 150 ), material );
   groundMesh.rotation.x = - Math.PI / 2;

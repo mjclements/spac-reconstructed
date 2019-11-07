@@ -1,7 +1,10 @@
 {
   "files":[
-    { "clickable" : "stl/prison_room_1_floor_1.STL" },
-    { "not_clickable" : "stl/full_prison_assem_binary_114.STL" },
-    { "not_clickable" : "stl/full_prison2_assem_binary_114_lowres.STL" }
+    { "clickable" : "assets/stl/full_prison_assem_testwithboxclicked.STL" }
+  ],
+  "temp":[
+    { "clickable" : "assets/stl/prison_room_1_floor_1.STL" },
+    { "not_clickable" : "assets/stl/full_prison_assem_binary_114.STL" },
+    { "not_clickable" : "assets/stl/full_prison2_assem_binary_114_lowres.STL" }
   ]
 }
