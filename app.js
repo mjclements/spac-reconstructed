@@ -16,6 +16,7 @@ const server = http.createServer( function( request,response ) {
 })
 
 const handleGet = function( request, response ) {
+  //console.log(request.url)
   const filename = /*dir +*/ request.url.slice( 1 ) 
   //console.log( filename );
 
