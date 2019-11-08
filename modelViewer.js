@@ -5,11 +5,11 @@ import { STLLoader } from './examples/jsm/loaders/STLLoader.js'
 
 import { OrbitControls } from './examples/jsm/controls/OrbitControls.js'
 
-import { OutlineEffect } from './examples/jsm/effects/OutlineEffect.js';
+import { OutlineEffect } from './examples/jsm/effects/OutlineEffect.js'
 
 var container; var clickable = []
 
-var camera, cameraTarget, scene, renderer, mesh, mouse, raycaster, effect
+var camera; var cameraTarget; var scene; var renderer; var mesh; var mouse; var raycaster; var effect; var highlighted = false
 
 var mouse = new THREE.Vector2(); var INTERSECTED
 
@@ -24,43 +24,60 @@ function init () {
   camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
   camera.position.set(-500, 300, 600)
 
-  cameraTarget = new THREE.Vector3(0, 0, 0)  //y = 25
+  cameraTarget = new THREE.Vector3(0, 15, 0)
   scene = new THREE.Scene()
-  scene.background = new THREE.Color( 0xebf8fc );
+  scene.background = new THREE.Color(0xebf8fc)
 
   document.addEventListener('mousemove', onDocumentMouseMove, false)
+  document.addEventListener('click', onDocumentMouseClick, false)
   raycaster = new THREE.Raycaster()
 
   // Lights
   scene.add(new THREE.HemisphereLight(0x443333, 0x111122))
 
   addShadowedLight(1, 1, 1, 0xffffff, 1.35)
-  addShadowedLight(0.5, 1, -1, 0xffaa00, 1)
+  addShadowedLight(0.5, 1, -1, 0xffffff, 1)
 
-  var light = new THREE.AmbientLight( 0xffffff, .5 ); // soft white light
-  scene.add( light );
+  // var light = new THREE.AmbientLight( 0xffffff, .5 ); // soft white light
+  // scene.add( light );
 
   // renderer
   renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setPixelRatio(window.devicePixelRatio)
   renderer.setSize(window.innerWidth, window.innerHeight)
 
-
   renderer.gammaInput = true
   renderer.gammaOutput = true
   renderer.shadowMap.enabled = true
 
-  effect = new OutlineEffect( renderer );
+  effect = new OutlineEffect(renderer)
 
   container.appendChild(renderer.domElement)
 
-  renderer.sortObjects = false;
+  renderer.sortObjects = false
 
   // controls
   var controls = new OrbitControls(camera, renderer.domElement)
   controls.maxPolarAngle = Math.PI * 0.5
-  controls.minDistance = 100
+  controls.minDistance = 50
   controls.maxDistance = 1000
+
+  //* ** for dev, remove
+  var geometry = new THREE.BoxGeometry(1, 1, 1)
+  var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+  var cube = new THREE.Mesh(geometry, material)
+  scene.add(cube)
+  //* **
+
+  // ground
+  var texture = new THREE.TextureLoader().load('assets/images/overview.JPG')
+  var material = new THREE.MeshLambertMaterial({ map: texture })
+  var groundMesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(200, 150), material)
+  groundMesh.rotation.x = -Math.PI / 2
+  groundMesh.rotation.z = -0.14
+  groundMesh.position.y = -0.5
+
+  scene.add(groundMesh)
 
   window.addEventListener('resize', onWindowResize, false)
 }
@@ -69,6 +86,16 @@ function onDocumentMouseMove (event) {
   event.preventDefault()
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+}
+
+function onDocumentMouseClick (event) {
+  event.preventDefault()
+  clickable.forEach(function(element) {
+    console.log(element.link)
+    if (INTERSECTED && INTERSECTED.uuid == element.uuid) {
+      window.location = element.link
+    }
+  })
 }
 
 function addShadowedLight (x, y, z, color, intensity) {
@@ -99,119 +126,71 @@ function getData () {
       return response.json()
     })
     .then(function (json) {
-      // console.log(json)
+       console.log(json)
       loadModels(json)
     })
   return false
 }
 
 function loadModels (json) {
-  var materials = []
-  var name
+  var loader = new STLLoader() // var name
 
-  json.files.forEach(function (element) {
-    if (element.hasOwnProperty('clickable')) name = element.clickable
-    else name = element.not_clickable
+  json.clickable.forEach(function (element) {
+    loader.load(element.file_name, function (geometry) {
+      var material = new THREE.MeshPhongMaterial({
+        color: 0xfa8787,
+        specular: 0x111111,
+        /* emissive: 0xff0000, 
+        shininess: 10, */
+        flatShading: true,
+        transparent: true
+      })
+      material.opacity = 0.8
 
-    var loader = new STLLoader();
-    loader.load(name, function (geometry) {
-        var materials = [];
-        var nGeometryGroups = geometry.groups.length;
-      
-      //  var colorMap = ...; // Some logic to index colors.
-      
-        for (var i = 0; i < nGeometryGroups; i++) {
-      
-      		var material = new THREE.MeshPhongMaterial({
-      			color: 0xffffff,
-      			wireframe: false
-      		});
-      
-        }
-      
-      materials.push(material);
-      var mesh = new THREE.Mesh(geometry, materials);
-      mesh.scale.set(0.019,0.02,0.02)
+      mesh = new THREE.Mesh(geometry, material) // declared globally
 
-      scene.add( mesh )
-      console.log("hmmmmm")
+      mesh.position.set(-43, 3, 15)
+      mesh.scale.set(0.019, 0.02, 0.02)
+      mesh.castShadow = true
+      // mesh.receiveShadow = true
 
-       /*
+      var clickable_room = { file_name : element.file_name, uuid : mesh.uuid, link : element.link }
+      console.log(clickable_room)
+      clickable.push(clickable_room)
 
-      var material = new THREE.MeshPhongMaterial( { color: 0xff5533, specular: 0x111111, shininess: 200 } );
-      var mesh = new THREE.Mesh( geometry, material );
-      mesh.position.set( 0, - 0.25, 0.6 );
-      //mesh.rotation.set( 0, - Math.PI / 2, 0 );
-      mesh.scale.set( 0.019, 0.02, 0.02 );
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-      scene.add( mesh );
-      */
-      
-    } );
-    
+      scene.add(mesh)
+    })
+  })
+  json.not_clickable.forEach(function (element) {
+    loader.load(element.file_name, function (geometry) {
+      var material = new THREE.MeshPhongMaterial({
+        color: 0x545252,
+        specular: 0x111111,
+        shininess: 30, /* emissive: 0xff0000, */
+        transparent: true,
+        flatShading: true
+      })
 
-      // console.log(name + " has been loaded")
+      material.polygonOffset = true
+      material.polygonOffsetFactor = -2 // positive value pushes polygon further away
+      material.polygonOffsetUnits = 1
+      material.needsUpdate = true
+      material.opacity = 0.7
+
+      mesh = new THREE.Mesh(geometry, material) // declared globally
+
+      mesh.position.set(-43, 3, 15)
+      mesh.scale.set(0.019, 0.02, 0.02)
+      mesh.castShadow = true
+      // mesh.receiveShadow = true
+
+      // if (element.hasOwnProperty('clickable')) clickable.push(mesh.uuid);
+
+      scene.add(mesh)
+    })
   })
 
-
-
-//binary, previously working
-// function loadModels (json) {
-//   var loader = new STLLoader(); var name
-//   json.files.forEach(function (element) {
-//     if (element.hasOwnProperty('clickable')) name = element.clickable
-//     else name = element.not_clickable
-
-//     console.log(name)
-
-//     loader.load(name, function (geometry) {
-//       if (!element.hasOwnProperty('clickable')) {
-//         var material = new THREE.MeshPhongMaterial({ color: 0x5a5d5e, specular: 0x111111,  shininess: 200, 
-//            transparent: true,/* depthWrite: false /*, /*flatShading:true/*/})
-
-//           material.polygonOffset = true;
-//           material.polygonOffsetFactor = -2; // positive value pushes polygon further away
-//           material.polygonOffsetUnits = 1;
-//           material.needsUpdate = true;
-//           material.opacity = 0.8
-//       } else {
-//         var material = new THREE.MeshPhongMaterial({ color: 0xababab, specular: 0x111111,  shininess: 200/*,flatShading:true*/})
-
-//       }
-
-//       mesh = new THREE.Mesh(geometry, material) // declared globally
-
-//       mesh.position.set(-43, 0, 1) 
-//       mesh.scale.set(0.019, 0.02, 0.02) 
-//       mesh.castShadow = true
-//       mesh.receiveShadow = true
-
-//       if (element.hasOwnProperty('clickable')) clickable.push(mesh.uuid);
-
-//       scene.add(mesh)
-
-//       // console.log(name + " has been loaded")
-//     })
-//   })
-
-  //* ** for dev, remove
-  var geometry = new THREE.BoxGeometry(1, 1, 1)
-  var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-  var cube = new THREE.Mesh(geometry, material)
-  scene.add(cube)
-  //* **
-
-  // ground
-  var texture = new THREE.TextureLoader().load('assets/images/overview.JPG')
-  var material = new THREE.MeshLambertMaterial( { map: texture } );
-  var groundMesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 200, 150 ), material );
-  groundMesh.rotation.x = - Math.PI / 2;
-  groundMesh.rotation.z = -0.14
-  groundMesh.position.y = - 0.5;
-
-  scene.add( groundMesh );
-  //mesh.receiveShadow = true;
+  // mesh.receiveShadow = true;
 }
 
 function onWindowResize () {
@@ -219,7 +198,6 @@ function onWindowResize () {
   camera.updateProjectionMatrix()
 
   renderer.setSize(window.innerWidth, window.innerHeight)
-
 }
 
 function animate () {
@@ -230,7 +208,8 @@ function animate () {
 
 function render () {
   var timer = Date.now() * 0.0005
-  var highlighted = false
+
+  var color = 0xfa8787
   // scene.rotation.y = timer
 
   camera.lookAt(cameraTarget)
@@ -240,17 +219,24 @@ function render () {
 
   for (var i = 0; i < intersects.length; i++) {
     clickable.forEach(function (element) {
-      if (intersects[i].object.uuid === element) {
+      if (intersects[i].object.uuid === element.uuid) {
         highlighted = true
         if (INTERSECTED != intersects[i].object) {
-          if (INTERSECTED) INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
+          if (INTERSECTED) {
+            INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
+            INTERSECTED.material.color.setHex(INTERSECTED.currentHex)
+          }
           INTERSECTED = intersects[i].object
           INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex()
           INTERSECTED.material.emissive.setHex(0xff0000)
+          INTERSECTED.material.color.setHex(0xff0000)
         }
       } else {
         if (!highlighted) {
-          if (INTERSECTED) INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
+          if (INTERSECTED) {
+            INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
+            INTERSECTED.material.color.setHex(color)
+          }
           INTERSECTED = null
         }
       }
@@ -258,8 +244,12 @@ function render () {
   }
   highlighted = false
   if (intersects.length == 0) {
-    if (INTERSECTED) INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
+    if (INTERSECTED) {
+      INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
+      INTERSECTED.material.color.setHex(color)
+    }
     INTERSECTED = null
   }
-  renderer.render(scene, camera)
+  // renderer.render(scene, camera)
+  effect.render(scene, camera)
 }
