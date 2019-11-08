@@ -1,8 +1,8 @@
 
-import * as THREE from './build/three.module.js'
-import { STLLoader } from './examples/jsm/loaders/STLLoader.js'
-import { OrbitControls } from './examples/jsm/controls/OrbitControls.js'
-import { OutlineEffect } from './examples/jsm/effects/OutlineEffect.js'
+import * as THREE from './modules/three.module.js'
+import { STLLoader } from './modules/STLLoader.js'
+import { OrbitControls } from './modules/OrbitControls.js'
+import { OutlineEffect } from './modules/OutlineEffect.js'
 
 var container, clickable = [], clickable_opacity = 0.8, clickable_color = 0xf02011
 var camera, cameraTarget, scene, renderer, mesh, mouse, raycaster, effect, highlighted = false
