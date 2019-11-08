@@ -61,7 +61,7 @@ function init () {
   sphere.position.set(5, 3, -10)
   sphere.scale.set(0.25,0.25,0.25)
   scene.add( sphere )
-  clickable.push({ uuid : sphere.uuid, link : "Clements make me a page to link to" })
+  clickable.push({ uuid : sphere.uuid, link : "volleyball.html" })
 
   //* ** for dev, remove
    geometry = new THREE.BoxGeometry(1, 1, 1)
