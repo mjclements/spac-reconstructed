@@ -1,24 +1,15 @@
 {
-  "clickable":[
+  "clickable":
+  [
     { 
      "file_name" : "assets/stl/prison_room_1_floor_1.STL",
      "link" : "cell1.html"
     }
   ],
-  "not_clickable" : [
-    { "file_name" : "assets/stl/full_prison_assem07112019(with3buidlings).STL" }
-  ],
-  "files":[
-    { "clickable" : "assets/stl/prison_room_1_floor_1.STL" },
-
-    { "not_clickable" : "assets/stl/full_prison_assem07112019(with3buidlings).STL" }
-  ],
-  "temp":[
-    { "clickable" : "assets/stl/prison_room_1_floor_1.STL" },
-    { "not_clickable" : "assets/stl/full_prison_assem_binary_114.STL" },
-    { "not_clickable" : "assets/stl/full_prison2_assem_binary_114_lowres.STL" },
-    {"clickable":"assets/stl/building_ga4_assem_binary.STL"},
-
-    { "not_clickable" : "assets/stl/full_prison_assem_testwithboxclicked.STL" }
+  "not_clickable" : 
+  [
+    { 
+      "file_name" : "assets/stl/full_prison_assem07112019(with3buidlings).STL" 
+    }
   ]
 }

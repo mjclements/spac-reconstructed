@@ -1,17 +1,12 @@
 
 import * as THREE from './build/three.module.js'
-
 import { STLLoader } from './examples/jsm/loaders/STLLoader.js'
-
 import { OrbitControls } from './examples/jsm/controls/OrbitControls.js'
-
 import { OutlineEffect } from './examples/jsm/effects/OutlineEffect.js'
 
-var container; var clickable = []
-
-var camera; var cameraTarget; var scene; var renderer; var mesh; var mouse; var raycaster; var effect; var highlighted = false
-
-var mouse = new THREE.Vector2(); var INTERSECTED
+var container, clickable = [], clickable_opacity = 0.8
+var camera, cameraTarget, scene, renderer, mesh, mouse, raycaster, effect, highlighted = false
+var mouse = new THREE.Vector2(), INTERSECTED
 
 init()
 getData()
@@ -23,8 +18,8 @@ function init () {
 
   camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
   camera.position.set(-500, 300, 600)
-
   cameraTarget = new THREE.Vector3(0, 15, 0)
+
   scene = new THREE.Scene()
   scene.background = new THREE.Color(0xebf8fc)
 
@@ -34,7 +29,6 @@ function init () {
 
   // Lights
   scene.add(new THREE.HemisphereLight(0x443333, 0x111122))
-
   addShadowedLight(1, 1, 1, 0xffffff, 1.35)
   addShadowedLight(0.5, 1, -1, 0xffffff, 1)
 
@@ -45,15 +39,12 @@ function init () {
   renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setPixelRatio(window.devicePixelRatio)
   renderer.setSize(window.innerWidth, window.innerHeight)
-
   renderer.gammaInput = true
   renderer.gammaOutput = true
   renderer.shadowMap.enabled = true
 
   effect = new OutlineEffect(renderer)
-
   container.appendChild(renderer.domElement)
-
   renderer.sortObjects = false
 
   // controls
@@ -62,11 +53,21 @@ function init () {
   controls.minDistance = 50
   controls.maxDistance = 1000
 
+  // object = new THREE.Mesh( new THREE.SphereBufferGeometry( 75, 20, 10 ), material );
+  var geometry = new THREE.SphereGeometry(10, 10, 10)
+  var material = new THREE.MeshPhongMaterial({color:0xff0000, transparent: true})
+  material.opacity = clickable_opacity
+  var sphere = new THREE.Mesh(geometry, material)
+  sphere.position.set(5, 3, -10)
+  sphere.scale.set(0.25,0.25,0.25)
+  scene.add( sphere )
+  clickable.push({ uuid : sphere.uuid, link : "Clements make me a page to link to" })
+
   //* ** for dev, remove
-  var geometry = new THREE.BoxGeometry(1, 1, 1)
-  var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-  var cube = new THREE.Mesh(geometry, material)
-  scene.add(cube)
+   geometry = new THREE.BoxGeometry(1, 1, 1)
+   material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+   var cube = new THREE.Mesh(geometry, material)
+   scene.add(cube)
   //* **
 
   // ground
@@ -76,7 +77,6 @@ function init () {
   groundMesh.rotation.x = -Math.PI / 2
   groundMesh.rotation.z = -0.14
   groundMesh.position.y = -0.5
-
   scene.add(groundMesh)
 
   window.addEventListener('resize', onWindowResize, false)
@@ -104,31 +104,26 @@ function addShadowedLight (x, y, z, color, intensity) {
   scene.add(directionalLight)
 
   directionalLight.castShadow = true
-
   var d = 1
   directionalLight.shadow.camera.left = -d
   directionalLight.shadow.camera.right = d
   directionalLight.shadow.camera.top = d
   directionalLight.shadow.camera.bottom = -d
-
   directionalLight.shadow.camera.near = 1
   directionalLight.shadow.camera.far = 4
-
   directionalLight.shadow.bias = -0.002
 }
 
 function getData () {
   fetch('/getdata', {
     method: 'GET'
-  })
-    .then(function (response) {
+  }).then(function (response) {
       console.log(response)
       return response.json()
-    })
-    .then(function (json) {
-       console.log(json)
-      loadModels(json)
-    })
+    }).then(function (json) {
+        // console.log(json)
+        loadModels(json)
+      })
   return false
 }
 
@@ -138,24 +133,20 @@ function loadModels (json) {
   json.clickable.forEach(function (element) {
     loader.load(element.file_name, function (geometry) {
       var material = new THREE.MeshPhongMaterial({
-        color: 0xfa8787,
-        specular: 0x111111,
-        /* emissive: 0xff0000, 
-        shininess: 10, */
-        flatShading: true,
-        transparent: true
+        color: 0xfa8787, specular: 0x111111,
+        /* emissive: 0xff0000, shininess: 10, */
+        flatShading: true, transparent: true
       })
-      material.opacity = 0.8
+      material.opacity = clickable_opacity
 
       mesh = new THREE.Mesh(geometry, material) // declared globally
-
       mesh.position.set(-43, 3, 15)
       mesh.scale.set(0.019, 0.02, 0.02)
       mesh.castShadow = true
       // mesh.receiveShadow = true
 
       var clickable_room = { file_name : element.file_name, uuid : mesh.uuid, link : element.link }
-      console.log(clickable_room)
+      //console.log(clickable_room)
       clickable.push(clickable_room)
 
       scene.add(mesh)
@@ -164,11 +155,9 @@ function loadModels (json) {
   json.not_clickable.forEach(function (element) {
     loader.load(element.file_name, function (geometry) {
       var material = new THREE.MeshPhongMaterial({
-        color: 0x545252,
-        specular: 0x111111,
-        shininess: 30, /* emissive: 0xff0000, */
-        transparent: true,
-        flatShading: true
+        color: 0x545252, specular: 0x111111,
+        shininess: 30, /* emissive: 0xff0000,*/
+        transparent: true, flatShading: true
       })
 
       material.polygonOffset = true
@@ -178,36 +167,29 @@ function loadModels (json) {
       material.opacity = 0.7
 
       mesh = new THREE.Mesh(geometry, material) // declared globally
-
       mesh.position.set(-43, 3, 15)
       mesh.scale.set(0.019, 0.02, 0.02)
       mesh.castShadow = true
       // mesh.receiveShadow = true
-
       // if (element.hasOwnProperty('clickable')) clickable.push(mesh.uuid);
-
       scene.add(mesh)
     })
   })
-
-  // mesh.receiveShadow = true;
 }
 
 function onWindowResize () {
   camera.aspect = window.innerWidth / window.innerHeight
   camera.updateProjectionMatrix()
-
   renderer.setSize(window.innerWidth, window.innerHeight)
 }
 
 function animate () {
   requestAnimationFrame(animate)
-
   render()
 }
 
 function render () {
-  var timer = Date.now() * 0.0005
+  //var timer = Date.now() * 0.0005
 
   var color = 0xfa8787
   // scene.rotation.y = timer
