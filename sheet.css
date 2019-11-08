@@ -1,10 +1,16 @@
 /* myStyle.css */
 
-body, html {width: 100%; height: 100%; margin: 0; padding: 0}
+body, html {width: 100%; height: 100%; margin: 0; padding: 0 font: helvetica}
 .row-container {display: flex; width: 100%; height: 100%; flex-direction: column; background-color: blue; overflow: hidden; position: absolute; top: 0; left:0;}
 .first-row {display: flex; flex-direction: row; background-color: red; height: 10vh;}
 .second-row {display: flex; flex-grow: 1; border: none; margin: 0; padding: 0; }
 .viewer {flex-grow: 1; border: none; margin: 0; padding: 0; }
-.scrollable-story {     padding: 70px 30px 50px 30px; color: rgb(147,147,147); z-index: 99 !important; position: absolute; left: 4%; top: 11%; max-width: 350px; height: 60vh; overflow: scroll; margin: 8px; background-color:rgba(0,0,0,0.8);}
-.back-button {flex-grow: 2; border: none; margin: 0; padding: 0; background-color: black; color: rgb(254,00,00); font-size: 8vh;}
-.title {flex-grow: 7; border: none; margin: 0; padding: 0; background-color: red; color: black; font-size: 8vh;}
+.scrollable-story {     padding: 40px 30px 50px 30px; color: rgb(147,147,147); z-index: 99 !important; position: absolute; left: 4%; top: 11%; max-width: 350px; height: 70vh; overflow: scroll; margin: 8px; background-color:rgba(0,0,0,0.8);}
+.back-button {text-align: center; flex-grow: 2; border: none; margin: 0; padding: 0; background-color: black; color: rgb(254,00,00); font-size: 8vh;}
+.title {text-align: center; flex-grow: 7; border: none; margin: 0; padding: 0; background-color: red; color: black; font-size: 8vh;}
+.logo {height: 10vh;}
+.story-title {height: 40px; font-size: 30px; color: yellow;}
+a {color:#FF0000;}         /* Unvisited link  */
+a:visited {color:#FF0000;} /* Visited link    */
+a:hover {color:#FF0000;}   /* Mouse over link */
+a:active {color:#FF0000;}  /* Selected link   */
