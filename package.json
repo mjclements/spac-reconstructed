@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/mjclements/heritage-viewer-toolkit/issues"
   },
-  "homepage": "https://github.com/mjclements/heritage-viewer-toolkit#readme"
+  "homepage": "https://github.com/mjclements/heritage-viewer-toolkit#readme",
+  "dependencies": {
+    "mime": "^2.4.4"
+  }
 }
