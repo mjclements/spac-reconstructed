@@ -53,16 +53,16 @@ function init () {
   controls.maxPolarAngle = Math.PI * 0.5
   controls.minDistance = 50
   controls.maxDistance = 1000
-
+//commented out hard-coded sphere because hardcode == bad
   // object = new THREE.Mesh( new THREE.SphereBufferGeometry( 75, 20, 10 ), material );
   var geometry = new THREE.SphereGeometry(25, 25, 25)
   var material = new THREE.MeshLambertMaterial({/*color:0xf02011, */transparent: true, /*emissive: 0x000000,*/ flatShading: true})
-  material.opacity = clickable_opacity
+//  material.opacity = clickable_opacity
   var sphere = new THREE.Mesh(geometry, material)
-  sphere.position.set(-15, 6, -10)
-  sphere.scale.set(0.15,0.15,0.15)
-  scene.add( sphere )
-  clickable.push({ uuid : sphere.uuid, link : "volleyball.html" })
+//  sphere.position.set(-15, 6, -10)
+//  sphere.scale.set(0.15,0.15,0.15)
+//  scene.add( sphere )
+//  clickable.push({ uuid : sphere.uuid, link : "volleyball.html" })
 
   //* ** for dev, remove
    geometry = new THREE.BoxGeometry(1, 1, 1)
