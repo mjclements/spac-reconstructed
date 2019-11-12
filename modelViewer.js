@@ -4,7 +4,7 @@ import { STLLoader } from './examples/jsm/loaders/STLLoader.js'
 import { OrbitControls } from './examples/jsm/controls/OrbitControls.js'
 import { OutlineEffect } from './examples/jsm/effects/OutlineEffect.js'
 
-var container, clickable = [], clickable_opacity = 0.8
+var container, clickable = [], clickable_opacity = 0.8, clickable_color = 0xf02011
 var camera, cameraTarget, scene, renderer, mesh, mouse, raycaster, effect, highlighted = false
 var mouse = new THREE.Vector2(), INTERSECTED
 
@@ -27,13 +27,14 @@ function init () {
   document.addEventListener('click', onDocumentMouseClick, false)
   raycaster = new THREE.Raycaster()
 
-  // Lights
-  scene.add(new THREE.HemisphereLight(0x443333, 0x111122))
-  addShadowedLight(1, 1, 1, 0xffffff, 1.35)
-  addShadowedLight(0.5, 1, -1, 0xffffff, 1)
+  // // Lights
+  // scene.add(new THREE.HemisphereLight(0x443333, 0x111122))
+  addShadowedLight(100, 100, 100, 0xffffff, 1.35) //1.35
+  addShadowedLight(-100, 100, -100, 0xffffff, 1.35) //1.35
+  //addShadowedLight(0.5, 1, -1, 0xffffff, 1)
 
-  // var light = new THREE.AmbientLight( 0xffffff, .5 ); // soft white light
-  // scene.add( light );
+  var light = new THREE.AmbientLight( 0xffffff, .5 ); // soft white light
+  scene.add( light );
 
   // renderer
   renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -54,18 +55,18 @@ function init () {
   controls.maxDistance = 1000
 
   // object = new THREE.Mesh( new THREE.SphereBufferGeometry( 75, 20, 10 ), material );
-  var geometry = new THREE.SphereGeometry(10, 10, 10)
-  var material = new THREE.MeshPhongMaterial({color:0xff0000, transparent: true})
+  var geometry = new THREE.SphereGeometry(25, 25, 25)
+  var material = new THREE.MeshLambertMaterial({/*color:0xf02011, */transparent: true, /*emissive: 0x000000,*/ flatShading: true})
   material.opacity = clickable_opacity
   var sphere = new THREE.Mesh(geometry, material)
-  sphere.position.set(5, 3, -10)
-  sphere.scale.set(0.25,0.25,0.25)
+  sphere.position.set(-15, 6, -10)
+  sphere.scale.set(0.15,0.15,0.15)
   scene.add( sphere )
   clickable.push({ uuid : sphere.uuid, link : "volleyball.html" })
 
   //* ** for dev, remove
    geometry = new THREE.BoxGeometry(1, 1, 1)
-   material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+   material = new THREE.MeshLambertMaterial({ color: 0x00ff00 })
    var cube = new THREE.Mesh(geometry, material)
    scene.add(cube)
   //* **
@@ -91,7 +92,7 @@ function onDocumentMouseMove (event) {
 function onDocumentMouseClick (event) {
   event.preventDefault()
   clickable.forEach(function(element) {
-    console.log(element.link)
+    //console.log(element.link)
     if (INTERSECTED && INTERSECTED.uuid == element.uuid) {
       window.location = element.link
     }
@@ -132,8 +133,8 @@ function loadModels (json) {
 
   json.clickable.forEach(function (element) {
     loader.load(element.file_name, function (geometry) {
-      var material = new THREE.MeshPhongMaterial({
-        color: 0xfa8787, specular: 0x111111,
+      var material = new THREE.MeshLambertMaterial({
+        /*color: 0xfa8787, /*specular: 0x111111,
         /* emissive: 0xff0000, shininess: 10, */
         flatShading: true, transparent: true
       })
@@ -143,20 +144,19 @@ function loadModels (json) {
       mesh.position.set(-43, 3, 15)
       mesh.scale.set(0.019, 0.02, 0.02)
       mesh.castShadow = true
-      // mesh.receiveShadow = true
+      mesh.receiveShadow = true
 
       var clickable_room = { file_name : element.file_name, uuid : mesh.uuid, link : element.link }
       //console.log(clickable_room)
       clickable.push(clickable_room)
-
       scene.add(mesh)
     })
   })
   json.not_clickable.forEach(function (element) {
     loader.load(element.file_name, function (geometry) {
-      var material = new THREE.MeshPhongMaterial({
-        color: 0x545252, specular: 0x111111,
-        shininess: 30, /* emissive: 0xff0000,*/
+      var material = new THREE.MeshLambertMaterial({
+        color: 0x545252, /*specular: 0x111111,
+        /*shininess: 30, /* emissive: 0xff0000,*/
         transparent: true, flatShading: true
       })
 
@@ -164,13 +164,13 @@ function loadModels (json) {
       material.polygonOffsetFactor = -2 // positive value pushes polygon further away
       material.polygonOffsetUnits = 1
       material.needsUpdate = true
-      material.opacity = 0.7
+      material.opacity = 0.6
 
       mesh = new THREE.Mesh(geometry, material) // declared globally
       mesh.position.set(-43, 3, 15)
       mesh.scale.set(0.019, 0.02, 0.02)
       mesh.castShadow = true
-      // mesh.receiveShadow = true
+      mesh.receiveShadow = true
       // if (element.hasOwnProperty('clickable')) clickable.push(mesh.uuid);
       scene.add(mesh)
     })
@@ -191,7 +191,7 @@ function animate () {
 function render () {
   //var timer = Date.now() * 0.0005
 
-  var color = 0xfa8787
+  //var color = 0xfa8787
   // scene.rotation.y = timer
 
   camera.lookAt(cameraTarget)
@@ -205,19 +205,20 @@ function render () {
         highlighted = true
         if (INTERSECTED != intersects[i].object) {
           if (INTERSECTED) {
-            INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
+            //INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
             INTERSECTED.material.color.setHex(INTERSECTED.currentHex)
           }
           INTERSECTED = intersects[i].object
-          INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex()
-          INTERSECTED.material.emissive.setHex(0xff0000)
+          //INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex()
+          INTERSECTED.currentHex = INTERSECTED.material.color.getHex()
+          //INTERSECTED.material.emissive.setHex(0xff0000)
           INTERSECTED.material.color.setHex(0xff0000)
         }
       } else {
         if (!highlighted) {
           if (INTERSECTED) {
-            INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
-            INTERSECTED.material.color.setHex(color)
+            //INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
+            INTERSECTED.material.color.setHex(clickable_color)
           }
           INTERSECTED = null
         }
@@ -227,8 +228,8 @@ function render () {
   highlighted = false
   if (intersects.length == 0) {
     if (INTERSECTED) {
-      INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
-      INTERSECTED.material.color.setHex(color)
+      //INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
+      INTERSECTED.material.color.setHex(clickable_color)
     }
     INTERSECTED = null
   }
