@@ -11,5 +11,15 @@
     { 
       "file_name" : "assets/stl/full_prison_assem07112019(with3buidlings).STL" 
     }
-  ]
-}
+  ], 
+  "orbs" : 
+   [
+     {
+       "x_pos" : "0",
+       "y_pos" : "0",
+       "z_pos" : "0",
+       "size" : "0",
+       "target" : "gate.html"
+     }
+    ]
+ }

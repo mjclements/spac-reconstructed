@@ -175,8 +175,17 @@ function loadModels (json) {
       scene.add(mesh)
     })
   })
+  json.orbs.forEach(function (element) {
+    var geometry = new THREE.SphereGeometry(25, 25, 25)
+    var material = new THREE.MeshLambertMaterial({/*color:0xf02011, */transparent: true, /*emissive: 0x000000,*/ flatShading: true})
+    material.opacity = clickable_opacity
+    var sphere = new THREE.Mesh(geometry, material)
+    sphere.position.set(element.x_pos, element.y_pos, element.z_pos)
+    sphere.scale.set(0.15,0.15,0.15)
+    scene.add( sphere )
+    clickable.push({ uuid : sphere.uuid, link : element.target })
+  })
 }
-
 function onWindowResize () {
   camera.aspect = window.innerWidth / window.innerHeight
   camera.updateProjectionMatrix()
