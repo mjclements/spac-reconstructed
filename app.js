@@ -5,7 +5,6 @@ const http = require( 'http' ),
       mime = require( 'mime' ),
       port = 3000
 
-
 const server = http.createServer( function( request,response ) {
   if ( request.method === 'GET' ) {
     handleGet( request, response )    
@@ -17,8 +16,6 @@ const server = http.createServer( function( request,response ) {
 
 const handleGet = function( request, response ) {
   const filename = /*dir +*/ request.url.slice( 1 ) 
-  //console.log( filename );
-
   if ( request.url === '/' ) {
     sendFile( response, './index.html' )
   } 
@@ -53,7 +50,6 @@ const handlePost = function( request, response ) {
 const getdata = function( response ) {
   response.writeHead( 200, "OK", {"Content-Type":"application/json"})
   fs.readFile('./stlfiles.json', 'utf8', function(err, contents) {
-    //console.log( contents );
     response.end( contents );
   })
 }

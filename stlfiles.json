@@ -1,10 +1,32 @@
 {
-  "files":[
-    { "clickable" : "assets/stl/full_prison_assem_testwithboxclicked.STL" }
+  "clickable":
+  [
+    { 
+     "file_name" : "assets/stl/prison_room_1_floor_1.STL",
+     "link" : "cell1.html"
+    }
   ],
-  "temp":[
-    { "clickable" : "assets/stl/prison_room_1_floor_1.STL" },
-    { "not_clickable" : "assets/stl/full_prison_assem_binary_114.STL" },
-    { "not_clickable" : "assets/stl/full_prison2_assem_binary_114_lowres.STL" }
-  ]
+  "not_clickable" : 
+  [
+    { 
+      "file_name" : "assets/stl/full_prison_assem07112019(with3buidlings).STL" 
+    }
+  ], 
+  "orbs" : 
+   [
+     {
+       "x_pos" : "-15",
+       "y_pos" : "6",
+       "z_pos" : "-10",
+       "size" : ".15",
+       "target" : "volleyball.html"
+     },
+     {
+       "x_pos" : "-13",
+       "y_pos" : "6",
+       "z_pos" : "25",
+       "size" : ".15",
+       "target" : "rollcall.html"
+      }
+    ]
 }
