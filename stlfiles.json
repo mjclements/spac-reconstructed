@@ -15,11 +15,18 @@
   "orbs" : 
    [
      {
-       "x_pos" : "0",
-       "y_pos" : "0",
-       "z_pos" : "0",
-       "size" : "0",
-       "target" : "gate.html"
-     }
+       "x_pos" : "-15",
+       "y_pos" : "6",
+       "z_pos" : "-10",
+       "size" : ".15",
+       "target" : "volleyball.html"
+     },
+     {
+       "x_pos" : "-13",
+       "y_pos" : "6",
+       "z_pos" : "25",
+       "size" : ".15",
+       "target" : "rollcall.html"
+      }
     ]
- }
+}
