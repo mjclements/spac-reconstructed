@@ -85,8 +85,11 @@ function init () {
 
 function onDocumentMouseMove (event) {
   event.preventDefault()
+  //var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+  mouse.y = event.clientY - (window.innerHeight * 0.1)//-(event.clientY / window.innerHeight) * 2 + 1
+  console.log(window.innerHeight * 0.1)
 }
 
 function onDocumentMouseClick (event) {
@@ -213,35 +216,20 @@ function render () {
       if (intersects[i].object.uuid === element.uuid) {
         highlighted = true
         if (INTERSECTED != intersects[i].object) {
-          if (INTERSECTED) {
-            //INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
-            INTERSECTED.material.color.setHex(INTERSECTED.currentHex)
-          }
+          if (INTERSECTED) { INTERSECTED.material.color.setHex(clickable_color) }
           INTERSECTED = intersects[i].object
-          //INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex()
-          INTERSECTED.currentHex = INTERSECTED.material.color.getHex()
-          //INTERSECTED.material.emissive.setHex(0xff0000)
           INTERSECTED.material.color.setHex(0xff0000)
         }
-      } else {
-        if (!highlighted) {
-          if (INTERSECTED) {
-            //INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
-            INTERSECTED.material.color.setHex(clickable_color)
-          }
+      } else if (!highlighted) {
+          if (INTERSECTED) { INTERSECTED.material.color.setHex(clickable_color)  }
           INTERSECTED = null
-        }
       }
     })
   }
   highlighted = false
   if (intersects.length == 0) {
-    if (INTERSECTED) {
-      //INTERSECTED.material.emissive.setHex(INTERSECTED.currentHex)
-      INTERSECTED.material.color.setHex(clickable_color)
-    }
+    if (INTERSECTED) { INTERSECTED.material.color.setHex(clickable_color) }
     INTERSECTED = null
   }
   renderer.render(scene, camera)
-  //effect.render(scene, camera)
 }
