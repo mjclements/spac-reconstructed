@@ -4,6 +4,7 @@ const http = require( 'http' ),
       // to install the mime library used in the following line of code
       mime = require( 'mime' ),
       port = 3000
+      dir = 'public/'
 
 const server = http.createServer( function( request,response ) {
   if ( request.method === 'GET' ) {
@@ -16,8 +17,9 @@ const server = http.createServer( function( request,response ) {
 
 const handleGet = function( request, response ) {
   const filename = /*dir +*/ request.url.slice( 1 ) 
+  console.log(filename)
   if ( request.url === '/' ) {
-    sendFile( response, './index.html' )
+    sendFile( response, './public/html/index.html' )
   } 
   else if ( request.url == '/getdata' ){
     getdata( response )

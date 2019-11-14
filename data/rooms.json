@@ -1,0 +1,15 @@
+{
+  "standard-rooms":
+  [
+    {
+      "name": "cell1",
+      "heading":"test heading",
+      "story-content":"test content"
+    },
+    {
+      "name": "volleyball",
+      "heading":"",
+      "story-content":""
+    } 
+  ]
+}
