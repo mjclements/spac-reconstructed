@@ -54,7 +54,7 @@
      [
       {
        "x_pos" : "0",
-       "y_pos" : "0",
+       "y_pos" : "100",
        "z_pos" : "0",
        "file_name" : "assets/stl/terrain.stl",
        "scale" : "27.66666666",

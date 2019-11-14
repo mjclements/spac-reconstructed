@@ -181,21 +181,26 @@ function loadModels (json) {
   })
   json.terrain.forEach(function (element) {
     loader.load(element.file_name, function (geometry) {
-     var material = new THREE.MeshLambertMaterial({
-      color: element.color, transparent: false, flatShading: true
-     })
+      var material = new THREE.MeshLambertMaterial({
+        color: 0xffffff, /*specular: 0x111111,
+        /*shininess: 30, /* emissive: 0xff0000,*/
+        transparent: true, flatShading: true
+      })
 
-     material.polygonOffset = true
-     material.polygonOffsetFactor = -2
-     material.polygonOffsetUnits = 1
-     material.needsUpdate = true
+      material.polygonOffset = true
+      material.polygonOffsetFactor = 1 //-2 // positive value pushes polygon further away // saydnaya does 1
+      material.polygonOffsetUnits = 1
+      material.needsUpdate = true
+      material.opacity = 0.6
+      material.needsUpdate = true;
 
-     mesh = new THREE.Mesh(geometry, material)
-     mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
-     mesh.scale.set(element.scale, element.scale, element.scale)
-     mesh.castShadow = true;
-     mesh.receiveShadow = true;
-     scene.add(mesh)
+      mesh = new THREE.Mesh(geometry, material) // declared globally
+      mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
+      mesh.scale.set(element.scale, element.scale, element.scale)
+      mesh.rotation.set(element.x_rot * Math.PI / 180, element.y_rot * Math.PI / 180, element.z_rot * Math.PI / 180)
+      mesh.castShadow = true
+      mesh.receiveShadow = true
+      scene.add(mesh)
     })
   })
 }
