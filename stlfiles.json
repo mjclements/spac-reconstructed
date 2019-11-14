@@ -24,17 +24,7 @@
       "z_rot" : "0",
       "scale" : ".02",
       "file_name" : "assets/stl/full_prison_assem07112019(with3buidlings).STL" 
-    },
-    {
-      "x_pos" : "-65",
-      "y_pos" : "-20",
-      "z_pos" : "140",
-      "x_rot" : "0",
-      "y_rot" : "90",
-      "z_rot" : "0",
-      "scale" : ".2626262626262626262626262626262626262626262626262626",
-      "file_name" : "assets/stl/terrain.stl"
-     }
+    }
   ], 
   "orbs" : 
    [
@@ -59,5 +49,17 @@
        "size" : ".05",
        "target" : "propaganda.html"
      }
-    ]
+    ],
+    "terrain" :
+     [
+      {
+       "x_pos" : "0",
+       "y_pos" : "0",
+       "z_pos" : "0",
+       "file_name" : "assets/stl/terrain.stl",
+       "scale" : "27.66666666",
+       "color" : "0x00FF00",
+       "texture" : "satelitephoto.png"
+      }
+     ]
 }

@@ -146,6 +146,8 @@ function loadModels (json) {
       mesh = new THREE.Mesh(geometry, material) // declared globally
       mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
       mesh.scale.set(element.scale, element.scale, element.scale)
+      mesh.rotation.set(element.x_rot * Math.PI / 180, element.y_rot * Math.PI / 180, element.z_rot * Math.PI / 180)
+
       mesh.castShadow = true
       mesh.receiveShadow = true
 
@@ -172,6 +174,7 @@ function loadModels (json) {
       mesh = new THREE.Mesh(geometry, material) // declared globally
       mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
       mesh.scale.set(element.scale, element.scale, element.scale)
+         mesh.rotation.set(element.x_rot * Math.PI / 180, element.y_rot * Math.PI / 180, element.z_rot * Math.PI / 180)
       mesh.castShadow = true
       mesh.receiveShadow = true
       // if (element.hasOwnProperty('clickable')) clickable.push(mesh.uuid);
@@ -188,7 +191,27 @@ function loadModels (json) {
     scene.add( sphere )
     clickable.push({ uuid : sphere.uuid, link : './public/' + element.target })
   })
+  json.terrain.forEach(function (element) {
+    loader.load(element.file_name, function (geometry) {
+     var material = new THREE.MeshLambertMaterial({
+      color: element.color, transparent: false, flatShading: true
+     })
+
+     material.polygonOffset = true
+     material.polygonOffsetFactor = -2
+     material.polygonOffsetUnits = 1
+     material.needsUpdate = true
+
+     mesh = new THREE.Mesh(geometry, material)
+     mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
+     mesh.scale.set(element.scale, element.scale, element.scale)
+     mesh.castShadow = true;
+     mesh.receiveShadow = true;
+     scene.add(mesh)
+    })
+  })
 }
+
 function onWindowResize () {
   camera.aspect = window.innerWidth / window.innerHeight
   camera.updateProjectionMatrix()
