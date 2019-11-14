@@ -1,7 +1,14 @@
 {
   "clickable":
   [
-    { 
+    {
+     "x_pos" : "-43",
+     "y_pos" : "3",
+     "z_pos" : "15",
+     "x_rot" : "0",
+     "y_rot" : "0",
+     "z_rot" : "0",
+     "scale" : ".02", 
      "file_name" : "assets/stl/prison_room_1_floor_1.STL",
      "link" : "cell1.html"
     }
@@ -9,6 +16,13 @@
   "not_clickable" : 
   [
     { 
+      "x_pos" : "-43",
+      "y_pos" : "3",
+      "z_pos" : "15",
+      "x_rot" : "0",
+      "y_rot" : "0",
+      "z_rot" : "0",
+      "scale" : ".02",
       "file_name" : "assets/stl/full_prison_assem07112019(with3buidlings).STL" 
     }
   ], 
@@ -27,6 +41,13 @@
        "z_pos" : "25",
        "size" : ".15",
        "target" : "rollcall.html"
-      }
+      },
+     { 
+       "x_pos" : "18",
+       "y_pos" : "4",
+       "z_pos" : "13",
+       "size" : ".05",
+       "target" : "propaganda.html"
+     }
     ]
 }

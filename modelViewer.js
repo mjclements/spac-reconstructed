@@ -141,8 +141,8 @@ function loadModels (json) {
       material.opacity = clickable_opacity
 
       mesh = new THREE.Mesh(geometry, material) // declared globally
-      mesh.position.set(-43, 3, 15)
-      mesh.scale.set(0.019, 0.02, 0.02)
+      mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
+      mesh.scale.set(element.scale, element.scale, element.scale)
       mesh.castShadow = true
       mesh.receiveShadow = true
 
@@ -167,8 +167,8 @@ function loadModels (json) {
       material.opacity = 0.6
 
       mesh = new THREE.Mesh(geometry, material) // declared globally
-      mesh.position.set(-43, 3, 15)
-      mesh.scale.set(0.019, 0.02, 0.02)
+      mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
+      mesh.scale.set(element.scale, element.scale, element.scale)
       mesh.castShadow = true
       mesh.receiveShadow = true
       // if (element.hasOwnProperty('clickable')) clickable.push(mesh.uuid);
@@ -181,7 +181,7 @@ function loadModels (json) {
     material.opacity = clickable_opacity
     var sphere = new THREE.Mesh(geometry, material)
     sphere.position.set(element.x_pos, element.y_pos, element.z_pos)
-    sphere.scale.set(0.15,0.15,0.15)
+    sphere.scale.set(element.size,element.size,element.size)
     scene.add( sphere )
     clickable.push({ uuid : sphere.uuid, link : element.target })
   })
