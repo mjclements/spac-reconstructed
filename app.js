@@ -5,8 +5,6 @@ const http = require( 'http' ),
       mime = require( 'mime' ),
       port = 3000
 
-var dir = './public/'
-
 const server = http.createServer( function( request,response ) {
   if ( request.method === 'GET' ) {
     handleGet( request, response )    
@@ -17,21 +15,18 @@ const server = http.createServer( function( request,response ) {
 })
 
 const handleGet = function( request, response ) {
- // console.log(request.url)
-  const filename = /*dir +*/ request.url.slice( 1 )
+  const filename = request.url.slice( 1 )
   if ( request.url === '/' ) {
     sendFile( response, dir +'index.html' )
-    dir = './src/'
   } 
   else if ( request.url == '/getdata' ){
     getdata( response )
   }
-  else if ( request.url == '/modelViewer.js') {
-    dir = './public/'
-    sendFile(response, dir + 'js/modelViewer.js')
+  else if ( request.url.startsWith('/src/', 0) || request.url.startsWith('/assets/', 0)  ) {
+    sendFile(response, filename)
   }
   else {
-    sendFile( response, filename )
+    sendFile( response, 'public/' + filename )
   }
 
 }

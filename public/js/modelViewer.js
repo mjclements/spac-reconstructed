@@ -125,7 +125,7 @@ function loadModels (json) {
       mesh.castShadow = true
       mesh.receiveShadow = true
 
-      var clickable_room = { file_name : element.file_name, uuid : mesh.uuid, link : './public/' + element.link }
+      var clickable_room = { file_name : element.file_name, uuid : mesh.uuid, link : element.link }
       clickable.push(clickable_room)
       scene.add(mesh)
     })
@@ -163,7 +163,7 @@ function loadModels (json) {
     sphere.position.set(element.x_pos, element.y_pos, element.z_pos)
     sphere.scale.set(element.size,element.size,element.size)
     
-    clickable.push({ uuid : sphere.uuid, link : './public/' + element.target })
+    clickable.push({ uuid : sphere.uuid, link : element.target })
     scene.add( sphere )
   })
   json.terrain.forEach(function (element) {
