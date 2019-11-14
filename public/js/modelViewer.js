@@ -2,11 +2,13 @@
 import * as THREE from '../../src/three.module.js'
 import { STLLoader } from '../../src/STLLoader.js'
 import { OrbitControls } from '../../src/OrbitControls.js'
-//import { OutlineEffect } from '../../examples/jsm/effects/OutlineEffect.js'
 
 var container, clickable = [], clickable_opacity = 0.8, clickable_color = 0xf02011
-var camera, cameraTarget, scene, renderer, mesh, mouse, raycaster, effect, highlighted = false
-var mouse = new THREE.Vector2(), INTERSECTED
+var camera, cameraTarget, scene, renderer, mesh, mouse, raycaster, effect, highlighted = false, directionalLight
+var mouse = new THREE.Vector2(), INTERSECTED, emissiveDefault = 0x000000
+
+var emissiveDefault = 0xff5959,//0xf02011,//0x000000,
+    emissiveHighlight = 0xff0000
 
 init()
 getData()
@@ -17,7 +19,7 @@ function init () {
   document.body.appendChild(container)
 
   camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
-  camera.position.set(-500, 300, 600)
+  camera.position.set(-131, 137, 236)
   cameraTarget = new THREE.Vector3(0, 15, 0)
 
   scene = new THREE.Scene()
@@ -27,49 +29,38 @@ function init () {
   document.addEventListener('click', onDocumentMouseClick, false)
   raycaster = new THREE.Raycaster()
 
-  // // Lights
-  // scene.add(new THREE.HemisphereLight(0x443333, 0x111122))
-  addShadowedLight(100, 100, 100, 0xffffff, 1.35) //1.35
-  addShadowedLight(-100, 100, -100, 0xffffff, 1.35) //1.35
-  //addShadowedLight(0.5, 1, -1, 0xffffff, 1)
-
-  var light = new THREE.AmbientLight( 0xffffff, .5 ); // soft white light
+  // lights
+  var light = new THREE.AmbientLight( 0x333333 , .5 ); // soft white light
   scene.add( light );
+
+  directionalLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
+  directionalLight.position.set( 0, 0, 0.1 );
+  scene.add( directionalLight );
 
   // renderer
   renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setPixelRatio(window.devicePixelRatio)
   renderer.setSize(window.innerWidth, window.innerHeight)
-  renderer.gammaInput = true
-  renderer.gammaOutput = true
-  renderer.shadowMap.enabled = true
+  renderer.setClearColor( 0x666666 );
 
-  //effect = new OutlineEffect(renderer)
   container.appendChild(renderer.domElement)
-  renderer.sortObjects = false
 
   // controls
   var controls = new OrbitControls(camera, renderer.domElement)
-  controls.maxPolarAngle = Math.PI * 0.5
-  controls.minDistance = 50
-  controls.maxDistance = 1000
-//commented out hard-coded sphere because hardcode == bad
-  // object = new THREE.Mesh( new THREE.SphereBufferGeometry( 75, 20, 10 ), material );
-  var geometry = new THREE.SphereGeometry(25, 25, 25)
-  var material = new THREE.MeshLambertMaterial({/*color:0xf02011, */transparent: true, /*emissive: 0x000000,*/ flatShading: true})
-//  material.opacity = clickable_opacity
-  var sphere = new THREE.Mesh(geometry, material)
-//  sphere.position.set(-15, 6, -10)
-//  sphere.scale.set(0.15,0.15,0.15)
-//  scene.add( sphere )
-//  clickable.push({ uuid : sphere.uuid, link : "volleyball.html" })
-
-  //* ** for dev, remove
-   geometry = new THREE.BoxGeometry(1, 1, 1)
-   material = new THREE.MeshLambertMaterial({ color: 0x00ff00 })
-   var cube = new THREE.Mesh(geometry, material)
-   scene.add(cube)
-  //* **
+  // controls.maxPolarAngle = Math.PI * 0.5
+  controls.scaleFactor = 0.04;
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.05;
+  controls.enableZoom = true;
+  controls.zoomSpeed = 0.2;
+  controls.enablePan = false;
+  //controls.autoRotate = true;
+  //controls.autoRotateSpeed = 0.008;
+  controls.maxPolarAngle = 1.1;
+  controls.minPolarAngle = 0.7;
+  controls.enableKeys = false;
+  controls.minDistance = 40;
+  controls.maxDistance = 400;
 
   // ground
   var texture = new THREE.TextureLoader().load('assets/images/overview.JPG')
@@ -85,37 +76,19 @@ function init () {
 
 function onDocumentMouseMove (event) {
   event.preventDefault()
-  //var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-  mouse.y = event.clientY - (window.innerHeight * 0.1)//-(event.clientY / window.innerHeight) * 2 + 1
-  console.log(window.innerHeight * 0.1)
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1
+  //console.log(window.innerHeight * 0.1)
 }
 
 function onDocumentMouseClick (event) {
   event.preventDefault()
   clickable.forEach(function(element) {
-    //console.log(element.link)
     if (INTERSECTED && INTERSECTED.uuid == element.uuid) {
       window.location = element.link
     }
   })
-}
-
-function addShadowedLight (x, y, z, color, intensity) {
-  var directionalLight = new THREE.DirectionalLight(color, intensity)
-  directionalLight.position.set(x, y, z)
-  scene.add(directionalLight)
-
-  directionalLight.castShadow = true
-  var d = 1
-  directionalLight.shadow.camera.left = -d
-  directionalLight.shadow.camera.right = d
-  directionalLight.shadow.camera.top = d
-  directionalLight.shadow.camera.bottom = -d
-  directionalLight.shadow.camera.near = 1
-  directionalLight.shadow.camera.far = 4
-  directionalLight.shadow.bias = -0.002
 }
 
 function getData () {
@@ -137,11 +110,17 @@ function loadModels (json) {
   json.clickable.forEach(function (element) {
     loader.load(element.file_name, function (geometry) {
       var material = new THREE.MeshLambertMaterial({
-        /*color: 0xfa8787, /*specular: 0x111111,
+        color: emissiveDefault, /*specular: 0x111111,
         /* emissive: 0xff0000, shininess: 10, */
         flatShading: true, transparent: true
       })
       material.opacity = clickable_opacity
+
+      material.side = THREE.DoubleSide;
+      material.emissive.setHex( emissiveDefault );
+      material.polygonOffset = true;
+      material.polygonOffsetFactor = -2; // positive value pushes polygon further away
+      material.polygonOffsetUnits = 1;
 
       mesh = new THREE.Mesh(geometry, material) // declared globally
       mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
@@ -158,30 +137,39 @@ function loadModels (json) {
   json.not_clickable.forEach(function (element) {
     loader.load(element.file_name, function (geometry) {
       var material = new THREE.MeshLambertMaterial({
-        color: 0x545252, /*specular: 0x111111,
+        color: 0xffffff, /*specular: 0x111111,
         /*shininess: 30, /* emissive: 0xff0000,*/
         transparent: true, flatShading: true
       })
 
       material.polygonOffset = true
-      material.polygonOffsetFactor = -2 // positive value pushes polygon further away
+      material.polygonOffsetFactor = 1 //-2 // positive value pushes polygon further away // saydnaya does 1
       material.polygonOffsetUnits = 1
       material.needsUpdate = true
       material.opacity = 0.6
+      material.needsUpdate = true;
 
       mesh = new THREE.Mesh(geometry, material) // declared globally
       mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
       mesh.scale.set(element.scale, element.scale, element.scale)
       mesh.castShadow = true
       mesh.receiveShadow = true
-      // if (element.hasOwnProperty('clickable')) clickable.push(mesh.uuid);
       scene.add(mesh)
     })
   })
   json.orbs.forEach(function (element) {
     var geometry = new THREE.SphereGeometry(25, 25, 25)
-    var material = new THREE.MeshLambertMaterial({/*color:0xf02011, */transparent: true, /*emissive: 0x000000,*/ flatShading: true})
+    var material = new THREE.MeshLambertMaterial({color: emissiveDefault, transparent: true, /*emissive: 0x000000,*/ flatShading: true})
+
     material.opacity = clickable_opacity
+    material.opacity = clickable_opacity
+
+    material.side = THREE.DoubleSide;
+    material.emissive.setHex( emissiveDefault );
+    material.polygonOffset = true;
+    material.polygonOffsetFactor = -2; // positive value pushes polygon further away
+    material.polygonOffsetUnits = 1;
+
     var sphere = new THREE.Mesh(geometry, material)
     sphere.position.set(element.x_pos, element.y_pos, element.z_pos)
     sphere.scale.set(element.size,element.size,element.size)
@@ -189,6 +177,7 @@ function loadModels (json) {
     clickable.push({ uuid : sphere.uuid, link : './public/' + element.target })
   })
 }
+
 function onWindowResize () {
   camera.aspect = window.innerWidth / window.innerHeight
   camera.updateProjectionMatrix()
@@ -198,6 +187,16 @@ function onWindowResize () {
 function animate () {
   requestAnimationFrame(animate)
   render()
+}
+
+function mark( object3D ) {
+  object3D.material.emissive.setHex( emissiveHighlight );
+  object3D.material.needsUpdate = true;
+}
+
+function unmark( object3D  ) {
+  object3D.material.emissive.setHex( emissiveDefault );
+  object3D.material.needsUpdate = true;
 }
 
 function render () {
@@ -216,20 +215,24 @@ function render () {
       if (intersects[i].object.uuid === element.uuid) {
         highlighted = true
         if (INTERSECTED != intersects[i].object) {
-          if (INTERSECTED) { INTERSECTED.material.color.setHex(clickable_color) }
+          if (INTERSECTED) { mark(INTERSECTED) }
           INTERSECTED = intersects[i].object
-          INTERSECTED.material.color.setHex(0xff0000)
+          mark(INTERSECTED)
         }
-      } else if (!highlighted) {
-          if (INTERSECTED) { INTERSECTED.material.color.setHex(clickable_color)  }
+      } else {
+        if (!highlighted) {
+          if (INTERSECTED) { unmark(INTERSECTED) }
           INTERSECTED = null
+        }
       }
     })
   }
   highlighted = false
   if (intersects.length == 0) {
-    if (INTERSECTED) { INTERSECTED.material.color.setHex(clickable_color) }
+    if (INTERSECTED) { mark(INTERSECTED) }
     INTERSECTED = null
   }
+
+  directionalLight.position.copy( camera.position );
   renderer.render(scene, camera)
 }
