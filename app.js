@@ -17,7 +17,7 @@ const server = http.createServer( function( request,response ) {
 })
 
 const handleGet = function( request, response ) {
-  console.log(request.url)
+ // console.log(request.url)
   const filename = /*dir +*/ request.url.slice( 1 )
   if ( request.url === '/' ) {
     sendFile( response, dir +'index.html' )
