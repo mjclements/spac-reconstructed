@@ -7,7 +7,7 @@ var container, clickable = [], clickable_opacity = 0.8, clickable_color = 0xf020
 var camera, cameraTarget, scene, renderer, mesh, mouse, raycaster, effect, highlighted = false, directionalLight
 var mouse = new THREE.Vector2(), INTERSECTED, emissiveDefault = 0x000000
 
-var emissiveDefault = 0xff5959,//0xf02011,//0x000000,
+var emissiveDefault = 0x000000,//0xf02011,//0x000000,
     emissiveHighlight = 0xff0000
 
 init()
@@ -105,24 +105,19 @@ function getData () {
 }
 
 function loadModels (json) {
-  var loader = new STLLoader() // var name
+  var loader = new STLLoader() 
 
   json.clickable.forEach(function (element) {
     loader.load(element.file_name, function (geometry) {
-      var material = new THREE.MeshLambertMaterial({
-        color: emissiveDefault, /*specular: 0x111111,
-        /* emissive: 0xff0000, shininess: 10, */
-        flatShading: true, transparent: true
-      })
+      var material = new THREE.MeshLambertMaterial({ color: 0xff5959, flatShading: true, transparent: true })
       material.opacity = clickable_opacity
 
-      material.side = THREE.DoubleSide;
-      material.emissive.setHex( emissiveDefault );
-      material.polygonOffset = true;
-      material.polygonOffsetFactor = -2; // positive value pushes polygon further away
-      material.polygonOffsetUnits = 1;
+      material.polygonOffset = true
+      material.polygonOffsetFactor = -2 // positive value pushes polygon further away
+      material.polygonOffsetUnits = 1
+      material.needsUpdate = true
 
-      mesh = new THREE.Mesh(geometry, material) // declared globally
+      mesh = new THREE.Mesh(geometry, material) 
       mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
       mesh.scale.set(element.scale, element.scale, element.scale)
       mesh.rotation.set(element.x_rot * Math.PI / 180, element.y_rot * Math.PI / 180, element.z_rot * Math.PI / 180)
@@ -131,27 +126,21 @@ function loadModels (json) {
       mesh.receiveShadow = true
 
       var clickable_room = { file_name : element.file_name, uuid : mesh.uuid, link : './public/' + element.link }
-      //console.log(clickable_room)
       clickable.push(clickable_room)
       scene.add(mesh)
     })
   })
   json.not_clickable.forEach(function (element) {
     loader.load(element.file_name, function (geometry) {
-      var material = new THREE.MeshLambertMaterial({
-        color: 0xffffff, /*specular: 0x111111,
-        /*shininess: 30, /* emissive: 0xff0000,*/
-        transparent: true, flatShading: true
-      })
+      var material = new THREE.MeshLambertMaterial({ color: 0xffffff, transparent: true, flatShading: true })
+      material.opacity = 0.6
 
       material.polygonOffset = true
-      material.polygonOffsetFactor = 1 //-2 // positive value pushes polygon further away // saydnaya does 1
+      material.polygonOffsetFactor = 1 // positive value pushes polygon further away 
       material.polygonOffsetUnits = 1
       material.needsUpdate = true
-      material.opacity = 0.6
-      material.needsUpdate = true;
 
-      mesh = new THREE.Mesh(geometry, material) // declared globally
+      mesh = new THREE.Mesh(geometry, material) 
       mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
       mesh.scale.set(element.scale, element.scale, element.scale)
          mesh.rotation.set(element.x_rot * Math.PI / 180, element.y_rot * Math.PI / 180, element.z_rot * Math.PI / 180)
@@ -162,22 +151,20 @@ function loadModels (json) {
   })
   json.orbs.forEach(function (element) {
     var geometry = new THREE.SphereGeometry(25, 25, 25)
-    var material = new THREE.MeshLambertMaterial({color: emissiveDefault, transparent: true, /*emissive: 0x000000,*/ flatShading: true})
-
-    material.opacity = clickable_opacity
+    var material = new THREE.MeshLambertMaterial({color: 0xff5959, transparent: true, flatShading: true})
     material.opacity = clickable_opacity
 
-    material.side = THREE.DoubleSide;
-    material.emissive.setHex( emissiveDefault );
     material.polygonOffset = true;
     material.polygonOffsetFactor = -2; // positive value pushes polygon further away
     material.polygonOffsetUnits = 1;
+    material.needsUpdate = true
 
     var sphere = new THREE.Mesh(geometry, material)
     sphere.position.set(element.x_pos, element.y_pos, element.z_pos)
     sphere.scale.set(element.size,element.size,element.size)
-    scene.add( sphere )
+    
     clickable.push({ uuid : sphere.uuid, link : './public/' + element.target })
+    scene.add( sphere )
   })
   json.terrain.forEach(function (element) {
     loader.load(element.file_name, function (geometry) {
@@ -217,13 +204,15 @@ function animate () {
 }
 
 function mark( object3D ) {
-  object3D.material.emissive.setHex( emissiveHighlight );
-  object3D.material.needsUpdate = true;
+  object3D.material.emissive.setHex( emissiveHighlight )
+  object3D.material.opacity = 1.0
+  object3D.material.needsUpdate = true
 }
 
 function unmark( object3D  ) {
-  object3D.material.emissive.setHex( emissiveDefault );
-  object3D.material.needsUpdate = true;
+  object3D.material.emissive.setHex( emissiveDefault )
+  object3D.material.opacity = clickable_opacity
+  object3D.material.needsUpdate = true
 }
 
 function render () {
@@ -246,11 +235,11 @@ function render () {
           INTERSECTED = intersects[i].object
           mark(INTERSECTED)
         }
-      } else {
-        if (!highlighted) {
+      } else if (!highlighted){
+        //if (!highlighted) {
           if (INTERSECTED) { unmark(INTERSECTED) }
           INTERSECTED = null
-        }
+        //}
       }
     })
   }
