@@ -24,7 +24,17 @@
       "z_rot" : "0",
       "scale" : ".02",
       "file_name" : "assets/stl/full_prison_assem07112019(with3buidlings).STL" 
-    }
+    },
+    {
+      "x_pos" : "0",
+      "y_pos" : "0",
+      "z_pos" : "0",
+      "x_rot" : "0",
+      "y_rot" : "0",
+      "z_rot" : "0",
+      "scale" : "1",
+      "file_name" : "assets/stl/terrain.stl"
+     }
   ], 
   "orbs" : 
    [
