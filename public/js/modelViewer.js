@@ -10,7 +10,7 @@ var camera, cameraTarget, scene, renderer, mesh, mouse, raycaster, effect, highl
 var mouse = new THREE.Vector2(), INTERSECTED, emissiveDefault = 0x000000, gui, clicked
 var x_pos, x_rot, y_pos, y_rot, z_pos, z_rot
 
-var emissiveDefault = 0x000000,//0xf02011,//0x000000,
+var emissiveDefault = 0x000000,
     emissiveHighlight = 0xff0000
 
 init()
@@ -23,7 +23,7 @@ function init () {
 
   camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
   camera.position.set(-131, 137, 236)
-  cameraTarget = new THREE.Vector3(0, 15, 0)
+  cameraTarget = new THREE.Vector3(100, 15, 0)
 
   scene = new THREE.Scene()
   scene.background = new THREE.Color(0xebf8fc)
@@ -52,8 +52,8 @@ function init () {
 
   // controls
   var controls = new OrbitControls(camera, renderer.domElement)
+  controls.maxPolarAngle = Math.PI * 0.5
   /*
-  // controls.maxPolarAngle = Math.PI * 0.5
   controls.scaleFactor = 0.04;
   controls.enableDamping = true;
   controls.dampingFactor = 0.05;
@@ -69,47 +69,37 @@ function init () {
   controls.maxDistance = 400;
   */
 
-  /*
-  // ground
-  var texture = new THREE.TextureLoader().load('assets/images/overview.JPG')
-  var material = new THREE.MeshLambertMaterial({ map: texture })
-  var groundMesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(200, 150), material)
-  groundMesh.rotation.x = -Math.PI / 2
-  groundMesh.rotation.z = -0.14
-  groundMesh.position.y = -0.5
-  scene.add(groundMesh)
-  */
-
   window.addEventListener('resize', onWindowResize, false)
 }
 
 function onDocumentMouseMove (event) {
   event.preventDefault()
-
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1
+<<<<<<< Updated upstream
   mouse.y = -(event.clientY / (window.innerHeight) * 2 + 1)
   //console.log(window.innerHeight * 0.1)
   console.log(mouse.y)
+=======
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1.07
+  // console.log(window.innerHeight * 0.1)
+>>>>>>> Stashed changes
 }
 
 function onDocumentMouseClick (event) {
   event.preventDefault()
   clickable.forEach(function(element) {
     if (INTERSECTED && INTERSECTED.uuid == element.uuid) {
-      // gui.remove(x_pos)
-      // gui.remove(x_rot)
-      // gui.remove(y_pos)
-      // gui.remove(y_rot)
-      // gui.remove(z_pos)
-      // gui.remove(z_rot)
-      //window.location = element.link
-      x_pos = gui.add(INTERSECTED.position, 'x', -100, 100).name('x_pos').listen()
-      y_pos = gui.add(INTERSECTED.position, 'y', -100, 100).name('y_pos').listen()
-      z_pos = gui.add(INTERSECTED.position, 'z', -100, 100).name('z_pos').listen()
-      x_rot = gui.add(INTERSECTED.rotation, 'x', -100, 100).name('x_rot').listen()
-      y_rot = gui.add(INTERSECTED.rotation, 'y', -100, 100).name('y_rot').listen()
-      z_rot = gui.add(INTERSECTED.rotation, 'z', -100, 100).name('z_rot').listen()
-      cameraTarget = new THREE.Vector3(INTERSECTED.position.x,INTERSECTED.position.y,INTERSECTED.position.z)
+
+      window.location = element.target
+
+      // x_pos = gui.add(INTERSECTED.position, 'x', -100, 100).name('x_pos').listen()
+      // y_pos = gui.add(INTERSECTED.position, 'y', -100, 100).name('y_pos').listen()
+      // z_pos = gui.add(INTERSECTED.position, 'z', -100, 100).name('z_pos').listen()
+      // x_rot = gui.add(INTERSECTED.rotation, 'x', -100, 100).name('x_rot').listen()
+      // y_rot = gui.add(INTERSECTED.rotation, 'y', -100, 100).name('y_rot').listen()
+      // z_rot = gui.add(INTERSECTED.rotation, 'z', -100, 100).name('z_rot').listen()
+      // cameraTarget = new THREE.Vector3(INTERSECTED.position.x,INTERSECTED.position.y,INTERSECTED.position.z)
+
     }
   })
 }
@@ -148,7 +138,7 @@ function loadModels (json) {
       mesh.castShadow = true
       mesh.receiveShadow = true
 
-      var clickable_room = { file_name : element.file_name, uuid : mesh.uuid, link : element.link }
+      var clickable_room = { file_name : element.file_name, uuid : mesh.uuid, target : element.target }
       clickable.push(clickable_room)
       scene.add(mesh)
     })
@@ -166,15 +156,12 @@ function loadModels (json) {
       mesh = new THREE.Mesh(geometry, material) 
       mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
       mesh.scale.set(element.scale, element.scale, element.scale)
-      mesh.rotation.set(element.x_rot, element.y_rot, element.z_rot)
       mesh.rotation.set(THREE.Math.degToRad(element.x_rot), THREE.Math.degToRad(element.y_rot),THREE.Math.degToRad(element.z_rot))
-      //mesh.rotation.set(element.x_rot * Math.PI / 180, element.y_rot * Math.PI / 180, element.z_rot * Math.PI / 180)
+
       mesh.castShadow = true
       mesh.receiveShadow = true
-      scene.add(mesh)
 
-      var clickable_room = { file_name : element.file_name, uuid : mesh.uuid}
-      clickable.push(clickable_room)
+      scene.add(mesh)
     })
   })
   json.orbs.forEach(function (element) {
@@ -190,14 +177,15 @@ function loadModels (json) {
     var sphere = new THREE.Mesh(geometry, material)
     sphere.position.set(element.x_pos, element.y_pos, element.z_pos)
     sphere.scale.set(element.size,element.size,element.size)
+
+    var clickable_orb = { uuid : sphere.uuid, target : element.target }
+    clickable.push(clickable_orb)
     
-    clickable.push({ uuid : sphere.uuid, link : element.target })
     scene.add( sphere )
   })
   json.terrain.forEach(function (element) {
     loader.load(element.file_name, function (geometry) {
-      var material = new THREE.MeshLambertMaterial({ color: 0x00ff00, /*transparent: true/*, flatShading: true*/ })
-      //material.opacity = 0.6
+      var material = new THREE.MeshLambertMaterial({ color: 0x00ff00 })
 
       material.polygonOffset = true
       material.polygonOffsetFactor = 1 // positive value pushes polygon further away 
@@ -207,15 +195,12 @@ function loadModels (json) {
       mesh = new THREE.Mesh(geometry, material) 
       mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
       mesh.scale.set(element.scale, element.scale, element.scale)
-      mesh.rotation.set(element.x_rot * Math.PI / 180, element.y_rot * Math.PI / 180, element.z_rot * Math.PI / 180)
+      mesh.rotation.set(THREE.Math.degToRad(element.x_rot), THREE.Math.degToRad(element.y_rot),THREE.Math.degToRad(element.z_rot))
 
       mesh.castShadow = true
       mesh.receiveShadow = true
 
       scene.add(mesh)
-
-      //var clickable_room = { file_name : element.file_name, uuid : mesh.uuid}
-      //clickable.push(clickable_room)
     })
   })
 }
@@ -253,10 +238,7 @@ function render () {
 
   raycaster.setFromCamera(mouse, camera)
   var intersects = raycaster.intersectObjects(scene.children)
-  // if (intersects.length > 0) {
-  //   //name = gui.add(theController.selected_cube, 'name').listen()
 
-  // }
   for (var i = 0; i < intersects.length; i++) {
     clickable.forEach(function (element) {
       if (intersects[i].object.uuid === element.uuid) {
@@ -265,7 +247,6 @@ function render () {
           if (INTERSECTED) { unmark(INTERSECTED) } 
           INTERSECTED = intersects[i].object
           mark(INTERSECTED)
-          clicked = INTERSECTED
         }
       } else if (!highlighted) {
           if (INTERSECTED) { unmark(INTERSECTED) }
