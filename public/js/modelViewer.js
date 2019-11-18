@@ -179,7 +179,7 @@ function loadModels (json) {
   })
   json.terrain.forEach(function (element) {
     loader.load(element.file_name, function (geometry) {
-      var material = new THREE.MeshLambertMaterial({ color: 0x00ff00 })
+      var material = new THREE.MeshLambertMaterial({ color: parseInt(element.color) })
 
       material.polygonOffset = true
       material.polygonOffsetFactor = 1 // positive value pushes polygon further away 
