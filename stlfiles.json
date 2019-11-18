@@ -93,13 +93,6 @@
        "z_pos" : "25",
        "size" : ".15",
        "target" : "rollcall.html"
-      },
-     { 
-       "x_pos" : "65",
-       "y_pos" : "0.5",
-       "z_pos" : "-1",
-       "size" : ".05",
-       "target" : "propaganda.html"
      }
     ],
     "terrain" :
