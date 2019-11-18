@@ -29,7 +29,6 @@ const handleGet = function( request, response ) {
   else {
     sendFile( response, dir + filename )
   }
-
 }
 
 const handlePost = function( request, response ) {

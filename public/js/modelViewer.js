@@ -1,11 +1,14 @@
 
 import * as THREE from '../../src/three.module.js'
+import { GUI } from '../../src/dat.gui.module.js';
 import { STLLoader } from '../../src/STLLoader.js'
 import { OrbitControls } from '../../src/OrbitControls.js'
 
+
 var container, clickable = [], clickable_opacity = 0.8, clickable_color = 0xf02011
 var camera, cameraTarget, scene, renderer, mesh, mouse, raycaster, effect, highlighted = false, directionalLight
-var mouse = new THREE.Vector2(), INTERSECTED, emissiveDefault = 0x000000
+var mouse = new THREE.Vector2(), INTERSECTED, emissiveDefault = 0x000000, gui, clicked
+var x_pos, x_rot, y_pos, y_rot, z_pos, z_rot
 
 var emissiveDefault = 0x000000,//0xf02011,//0x000000,
     emissiveHighlight = 0xff0000
@@ -45,8 +48,11 @@ function init () {
 
   container.appendChild(renderer.domElement)
 
+  gui = new GUI();
+
   // controls
   var controls = new OrbitControls(camera, renderer.domElement)
+  /*
   // controls.maxPolarAngle = Math.PI * 0.5
   controls.scaleFactor = 0.04;
   controls.enableDamping = true;
@@ -61,7 +67,9 @@ function init () {
   controls.enableKeys = false;
   controls.minDistance = 40;
   controls.maxDistance = 400;
+  */
 
+  /*
   // ground
   var texture = new THREE.TextureLoader().load('assets/images/overview.JPG')
   var material = new THREE.MeshLambertMaterial({ map: texture })
@@ -70,6 +78,7 @@ function init () {
   groundMesh.rotation.z = -0.14
   groundMesh.position.y = -0.5
   scene.add(groundMesh)
+  */
 
   window.addEventListener('resize', onWindowResize, false)
 }
@@ -87,7 +96,20 @@ function onDocumentMouseClick (event) {
   event.preventDefault()
   clickable.forEach(function(element) {
     if (INTERSECTED && INTERSECTED.uuid == element.uuid) {
-      window.location = element.link
+      // gui.remove(x_pos)
+      // gui.remove(x_rot)
+      // gui.remove(y_pos)
+      // gui.remove(y_rot)
+      // gui.remove(z_pos)
+      // gui.remove(z_rot)
+      //window.location = element.link
+      x_pos = gui.add(INTERSECTED.position, 'x', -100, 100).name('x_pos').listen()
+      y_pos = gui.add(INTERSECTED.position, 'y', -100, 100).name('y_pos').listen()
+      z_pos = gui.add(INTERSECTED.position, 'z', -100, 100).name('z_pos').listen()
+      x_rot = gui.add(INTERSECTED.rotation, 'x', -100, 100).name('x_rot').listen()
+      y_rot = gui.add(INTERSECTED.rotation, 'y', -100, 100).name('y_rot').listen()
+      z_rot = gui.add(INTERSECTED.rotation, 'z', -100, 100).name('z_rot').listen()
+      cameraTarget = new THREE.Vector3(INTERSECTED.position.x,INTERSECTED.position.y,INTERSECTED.position.z)
     }
   })
 }
@@ -121,7 +143,7 @@ function loadModels (json) {
       mesh = new THREE.Mesh(geometry, material) 
       mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
       mesh.scale.set(element.scale, element.scale, element.scale)
-      mesh.rotation.set(element.x_rot * Math.PI / 180, element.y_rot * Math.PI / 180, element.z_rot * Math.PI / 180)
+      mesh.rotation.set(THREE.Math.degToRad(element.x_rot), THREE.Math.degToRad(element.y_rot),THREE.Math.degToRad(element.z_rot))
 
       mesh.castShadow = true
       mesh.receiveShadow = true
@@ -144,10 +166,15 @@ function loadModels (json) {
       mesh = new THREE.Mesh(geometry, material) 
       mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
       mesh.scale.set(element.scale, element.scale, element.scale)
-         mesh.rotation.set(element.x_rot * Math.PI / 180, element.y_rot * Math.PI / 180, element.z_rot * Math.PI / 180)
+      mesh.rotation.set(element.x_rot, element.y_rot, element.z_rot)
+      mesh.rotation.set(THREE.Math.degToRad(element.x_rot), THREE.Math.degToRad(element.y_rot),THREE.Math.degToRad(element.z_rot))
+      //mesh.rotation.set(element.x_rot * Math.PI / 180, element.y_rot * Math.PI / 180, element.z_rot * Math.PI / 180)
       mesh.castShadow = true
       mesh.receiveShadow = true
       scene.add(mesh)
+
+      var clickable_room = { file_name : element.file_name, uuid : mesh.uuid}
+      clickable.push(clickable_room)
     })
   })
   json.orbs.forEach(function (element) {
@@ -169,26 +196,26 @@ function loadModels (json) {
   })
   json.terrain.forEach(function (element) {
     loader.load(element.file_name, function (geometry) {
-      var material = new THREE.MeshLambertMaterial({
-        color: 0xffffff, /*specular: 0x111111,
-        /*shininess: 30, /* emissive: 0xff0000,*/
-        transparent: true, flatShading: true
-      })
+      var material = new THREE.MeshLambertMaterial({ color: 0x00ff00, /*transparent: true/*, flatShading: true*/ })
+      //material.opacity = 0.6
 
       material.polygonOffset = true
-      material.polygonOffsetFactor = 1 //-2 // positive value pushes polygon further away // saydnaya does 1
+      material.polygonOffsetFactor = 1 // positive value pushes polygon further away 
       material.polygonOffsetUnits = 1
       material.needsUpdate = true
-      material.opacity = 0.6
-      material.needsUpdate = true;
 
-      mesh = new THREE.Mesh(geometry, material) // declared globally
+      mesh = new THREE.Mesh(geometry, material) 
       mesh.position.set(element.x_pos, element.y_pos, element.z_pos)
       mesh.scale.set(element.scale, element.scale, element.scale)
       mesh.rotation.set(element.x_rot * Math.PI / 180, element.y_rot * Math.PI / 180, element.z_rot * Math.PI / 180)
+
       mesh.castShadow = true
       mesh.receiveShadow = true
+
       scene.add(mesh)
+
+      //var clickable_room = { file_name : element.file_name, uuid : mesh.uuid}
+      //clickable.push(clickable_room)
     })
   })
 }
@@ -226,27 +253,29 @@ function render () {
 
   raycaster.setFromCamera(mouse, camera)
   var intersects = raycaster.intersectObjects(scene.children)
+  // if (intersects.length > 0) {
+  //   //name = gui.add(theController.selected_cube, 'name').listen()
 
+  // }
   for (var i = 0; i < intersects.length; i++) {
     clickable.forEach(function (element) {
       if (intersects[i].object.uuid === element.uuid) {
         highlighted = true
         if (INTERSECTED != intersects[i].object) {
-          if (INTERSECTED) { mark(INTERSECTED) }
+          if (INTERSECTED) { unmark(INTERSECTED) } 
           INTERSECTED = intersects[i].object
           mark(INTERSECTED)
+          clicked = INTERSECTED
         }
-      } else if (!highlighted){
-        //if (!highlighted) {
+      } else if (!highlighted) {
           if (INTERSECTED) { unmark(INTERSECTED) }
           INTERSECTED = null
-        //}
       }
     })
   }
   highlighted = false
   if (intersects.length == 0) {
-    if (INTERSECTED) { mark(INTERSECTED) }
+    if (INTERSECTED) { unmark(INTERSECTED) }
     INTERSECTED = null
   }
 

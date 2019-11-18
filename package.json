@@ -98,6 +98,7 @@
     "directories": {}
   },
   "dependencies": {
+    "dat.gui": "^0.7.6",
     "mime": "^2.4.4"
   }
 }
