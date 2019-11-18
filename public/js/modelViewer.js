@@ -19,7 +19,7 @@ animate()
 
 function init () {
   container = document.createElement('div')
-  document.body.appendChild(container)
+  document.getElementById("model").appendChild(container)
 
   camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 10000)
   camera.position.set(-131, 137, 236)
@@ -43,7 +43,7 @@ function init () {
   // renderer
   renderer = new THREE.WebGLRenderer({ antialias: true })
   renderer.setPixelRatio(window.devicePixelRatio)
-  renderer.setSize(window.innerWidth, window.innerHeight)
+  renderer.setSize(window.innerWidth, window.innerHeight - document.getElementById("title-bar").clientHeight)
   renderer.setClearColor( 0x666666 );
 
   container.appendChild(renderer.domElement)
@@ -220,9 +220,9 @@ function loadModels (json) {
 }
 
 function onWindowResize () {
-  camera.aspect = window.innerWidth / window.innerHeight
+  camera.aspect = window.innerWidth / window.innerHeight 
   camera.updateProjectionMatrix()
-  renderer.setSize(window.innerWidth, window.innerHeight)
+  renderer.setSize(window.innerWidth, window.innerHeight - document.getElementById("title-bar").clientHeight)
 }
 
 function animate () {
