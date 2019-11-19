@@ -5,8 +5,6 @@
  <link rel = "stylesheet"
    type = "text/css"
    href = "sheet.css" />
-   <link rel="stylesheet" href="https://cdn.pannellum.org/2.3/pannellum.css"/>
-   <script type="text/javascript" src="https://cdn.pannellum.org/2.3/pannellum.js"></script>
  </head>
 <body>
 <div class ="scrollable-story">
@@ -22,42 +20,16 @@
   <div class="first-row">
  <img class='logo' src='assets/images/logo.png'>
     <div class="title">
-     Exercise Area
+     Exercise Area    
     </div>
     <div class="back-button">
     <a href="index.html">GO BACK</a>
     </div>
   </div>
-  <div allowfullscreen id="panorama" style="border-style:none;" class="second-row"></div>
-  </div>
-  <audio autoplay>
-     <source src="audio/cell1.mp3" type="audio/mpeg">
-  </audio>
-  <script>
-  pannellum.viewer('panorama', {
-      "type": "equirectangular",
-      "panorama": "assets/images/volleyball.JPG",
-      "autoLoad": true,
-      /*
-       * Uncomment the next line to print the coordinates of mouse clicks
-       * to the browser's developer console, which makes it much easier
-       * to figure out where to place hot spots. Always remove it when
-       * finished, though.
-       */
-//      "hotSpotDebug": true,
-      "hotSpots": [
-  	        {   "pitch": 19.280976304495713,
-  	    "yaw": -82.78214471698274,
-              "type": "info",
-              "text": "Nature's Law",
-              "URL": "/2volleyball.html"
-          }
-      ]
-  });
-  </script>
+  <iframe class="second-row" src="https://cdn.pannellum.org/2.5/pannellum.htm#panorama=https://i.imgur.com/dEzmO7F.jpg"></iframe>
 </div>
 <audio autoplay>
    <source src="audio/cell1.mp3" type="audio/mpeg">
-</audio>
+</audio>  
 </body>
 </html>
