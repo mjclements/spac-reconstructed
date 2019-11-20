@@ -5,8 +5,9 @@ const http = require( 'http' ),
       mime = require( 'mime' ),
       port = 3000,
       dir = 'public/'
+var target      
 
-const server = http.createServer( function( request,response ) {
+const server = http.createServer( function( request, response ) {
   if ( request.method === 'GET' ) {
     handleGet( request, response )    
   }
@@ -20,8 +21,13 @@ const handleGet = function( request, response ) {
   if ( request.url === '/' ) {
     sendFile( response, dir +'index.html' )
   } 
-  else if ( request.url == '/getdata' ){
+  else if ( request.url == '/getdata' ) {
     getdata( response )
+  }
+  else if (request.url == '/getTarget') {
+    console.log("here")
+    response.writeHead( 200, "OK", {"Content-Type":"application/json"} )
+    response.end( JSON.stringify( target ))
   }
   else if ( request.url.startsWith('/src/', 0) || request.url.startsWith('/assets/', 0)  ) {
     sendFile(response, filename)
@@ -32,23 +38,38 @@ const handleGet = function( request, response ) {
 }
 
 const handlePost = function( request, response ) {
-  if ( request.url === '/newEntry') {
-    response.writeHeader( 404 )
-    response.end( '404 Error: File Not Found' )
-
-    //newEntry( request, response )
-  } /*
-  else if ( request.url === '/editEntry' ) {
-    //editEntry( request, response )
+   if ( request.url == '/findTarget' ) {
+    findTarget( request, response )
   }
-  else if ( request.url === '/deleteEntry' ) {
-    deleteEntry( request, response )
-  }
-  */
   else {
     response.writeHeader( 404 )
     response.end( '404 Error: File Not Found' )
   }
+}
+
+const findTarget = function( request, response ) {
+  let dataString = ''
+
+  request.on( 'data', function( data ) {
+    dataString += data 
+  })
+
+  request.on( 'end', function() {
+    var appdata;
+    fs.readFile('./rooms.json', 'utf8', function(err, contents) {
+      appdata = JSON.parse (contents )  
+      var entry = JSON.parse(dataString)
+      for ( var i = 0; i < appdata.rooms.length; i++) {
+        if (appdata.rooms[i].title === entry.title) {
+          target = appdata.rooms[i]
+          response.writeHead( 200, "OK", {"Content-Type":"application/json"} )
+          response.end( /*JSON.stringify(appdata.rooms[i]*/ )
+        }
+      }
+    })
+  })
+  //console.log("you're a failure")
+  // you should add an error case dipshit
 }
 
 const getdata = function( response ) {
