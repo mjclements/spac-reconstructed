@@ -3,7 +3,7 @@ const http = require( 'http' ),
       // IMPORTANT: you must run `npm install` in the directory for this assignment
       // to install the mime library used in the following line of code
       mime = require( 'mime' ),
-      port = 3000
+      port = 3000,
       dir = 'public/'
 
 const server = http.createServer( function( request,response ) {
