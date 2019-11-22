@@ -1,16 +1,16 @@
 {
   "clickable":
   [
-     {
-      "x_pos" : "165",
-      "y_pos" : "15",
-      "z_pos" : "-47",
-      "x_rot" : "0",
-      "y_rot" : "225",
-      "z_rot" : "0",
-      "scale" : ".02",
-      "file_name" : "assets/stl/ga3a_rotated_with_foundation.STL",
-      "target" : "familymeeting.html"
+    {
+    "x_pos" : "165",
+    "y_pos" : "15",
+    "z_pos" : "-47",
+    "x_rot" : "0",
+    "y_rot" : "225",
+    "z_rot" : "0",
+    "scale" : ".02",
+    "file_name" : "assets/stl/ga3a_rotated_with_foundation.STL",
+    "target" : "familymeeting.html"
     },
     {
      "x_pos" : "0",
@@ -21,11 +21,12 @@
      "z_rot" : "0",
      "scale" : ".02", 
      "file_name" : "assets/stl/prison_room_1_floor_1.STL",
-     "target" : "cell1.html"
+     "target" : "ZENEL'S CELL"
     }
   ],
   "not_clickable" : 
   [
+
     { 
       "x_pos" : "0",
       "y_pos" : "0",

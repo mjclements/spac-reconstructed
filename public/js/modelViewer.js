@@ -7,7 +7,7 @@ import { OrbitControls } from '../../src/OrbitControls.js'
 
 var container, clickable = [], clickable_opacity = 0.8, clickable_color = 0xf02011
 var camera, cameraTarget, scene, renderer, mesh, mouse, raycaster, effect, highlighted = false, directionalLight
-var mouse = new THREE.Vector2(), INTERSECTED, emissiveDefault = 0x000000, gui, clicked
+var mouse = new THREE.Vector2(), INTERSECTED, emissiveDefault = 0x000000, gui, clicked, target
 var x_pos, x_rot, y_pos, y_rot, z_pos, z_rot
 
 var emissiveDefault = 0x000000,
@@ -72,6 +72,27 @@ function init () {
   window.addEventListener('resize', onWindowResize, false)
 }
 
+function collectTargetData( ) {
+  //console.log("collecting target data")
+
+  const json = { "title": target },
+      body = JSON.stringify( json );
+
+  fetch('/findTarget', {
+    method: 'POST',
+    body
+  }).then(function (response) {
+      console.log(response)
+      window.location = 'target.html'
+      //return response.json()
+    //}).then(function (json) {
+   //     console.log(json)
+        //target = json
+// + target//element.target
+      })
+  return false
+}
+
 function onDocumentMouseMove (event) {
   event.preventDefault()
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1
@@ -83,8 +104,15 @@ function onDocumentMouseClick (event) {
   event.preventDefault()
   clickable.forEach(function(element) {
     if (INTERSECTED && INTERSECTED.uuid == element.uuid) {
+      console.log("clicked a thing")
 
-      window.location = element.target
+      target = element.target
+      collectTargetData()
+
+      //console.log("data should be collected")
+      //console.log( target )
+
+
 
       // x_pos = gui.add(INTERSECTED.position, 'x', -100, 100).name('x_pos').listen()
       // y_pos = gui.add(INTERSECTED.position, 'y', -100, 100).name('y_pos').listen()
@@ -93,7 +121,6 @@ function onDocumentMouseClick (event) {
       // y_rot = gui.add(INTERSECTED.rotation, 'y', -100, 100).name('y_rot').listen()
       // z_rot = gui.add(INTERSECTED.rotation, 'z', -100, 100).name('z_rot').listen()
       // cameraTarget = new THREE.Vector3(INTERSECTED.position.x,INTERSECTED.position.y,INTERSECTED.position.z)
-
     }
   })
 }
@@ -256,4 +283,9 @@ function render () {
 
   directionalLight.position.copy( camera.position );
   renderer.render(scene, camera)
+}
+
+export function getTarget() { 
+  console.log( "get target " + target )
+  return target
 }
