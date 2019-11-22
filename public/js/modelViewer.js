@@ -48,7 +48,7 @@ function init () {
 
   container.appendChild(renderer.domElement)
 
-  gui = new GUI();
+  //gui = new GUI();
 
   // controls
   var controls = new OrbitControls(camera, renderer.domElement)
@@ -60,8 +60,11 @@ function init () {
   controls.enableZoom = true;
   controls.zoomSpeed = 0.2;
   controls.enablePan = false;
-  //controls.autoRotate = true;
-  //controls.autoRotateSpeed = 0.008;
+  */
+ // need anohter line to work in render
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 0.008;
+  /*
   controls.maxPolarAngle = 1.1;
   controls.minPolarAngle = 0.7;
   controls.enableKeys = false;
@@ -70,20 +73,6 @@ function init () {
   */
 
   window.addEventListener('resize', onWindowResize, false)
-}
-
-function collectTargetData( ) {
-  const json = { "title": target },
-      body = JSON.stringify( json );
-
-  fetch('/findTarget', {
-    method: 'POST',
-    body
-  }).then(function (response) {
-      console.log(response)
-      window.location = 'target.html'
-      })
-  return false
 }
 
 function onDocumentMouseMove (event) {
@@ -96,10 +85,16 @@ function onDocumentMouseClick (event) {
   event.preventDefault()
   clickable.forEach(function(element) {
     if (INTERSECTED && INTERSECTED.uuid == element.uuid) {
-      console.log("clicked a thing")
 
       target = element.target
-      collectTargetData()
+      switch( element.target.page_type ) {
+        case 'photo_360':
+          window.location = 'photo_360.html?id=' + element.target.id
+          break
+        case 'two_photo':
+          window.location = 'two_photo.html?id=' + element.target.id
+          break
+      }
 
       // x_pos = gui.add(INTERSECTED.position, 'x', -100, 100).name('x_pos').listen()
       // y_pos = gui.add(INTERSECTED.position, 'y', -100, 100).name('y_pos').listen()
@@ -219,11 +214,6 @@ function onWindowResize () {
   renderer.setSize(window.innerWidth, window.innerHeight - document.getElementById("title-bar").clientHeight)
 }
 
-function animate () {
-  requestAnimationFrame(animate)
-  render()
-}
-
 function mark( object3D ) {
   object3D.material.emissive.setHex( emissiveHighlight )
   object3D.material.opacity = 1.0
@@ -234,6 +224,11 @@ function unmark( object3D  ) {
   object3D.material.emissive.setHex( emissiveDefault )
   object3D.material.opacity = clickable_opacity
   object3D.material.needsUpdate = true
+}
+
+function animate () {
+  requestAnimationFrame(animate)
+  render()
 }
 
 function render () {

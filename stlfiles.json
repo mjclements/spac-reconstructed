@@ -10,7 +10,10 @@
     "z_rot" : "0",
     "scale" : ".02",
     "file_name" : "assets/stl/ga3a_rotated_with_foundation.STL",
-    "target" : "familymeeting.html"
+    "target" : {
+      "id":4,
+      "page_type":"photo_360"
+     }
     },
     {
      "x_pos" : "0",
@@ -21,7 +24,10 @@
      "z_rot" : "0",
      "scale" : ".02", 
      "file_name" : "assets/stl/prison_room_1_floor_1.STL",
-     "target" : "ZENEL'S CELL"
+     "target" : {
+       "id":0,
+       "page_type":"photo_360"
+      }
     }
   ],
   "not_clickable" : 
@@ -86,14 +92,20 @@
        "y_pos" : "8",
        "z_pos" : "-30",
        "size" : ".15",
-       "target" : "volleyball.html"
+       "target" : {
+        "id":3,
+        "page_type":"photo_360"
+       }
      },
      {
        "x_pos" : "30",
        "y_pos" : "0",
        "z_pos" : "25",
        "size" : ".15",
-       "target" : "rollcall.html"
+       "target" : {
+        "id":6,
+        "page_type":"photo_360"
+       }
      }
     ],
     "terrain" :

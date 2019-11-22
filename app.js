@@ -1,6 +1,6 @@
 const http = require( 'http' ),
       fs   = require( 'fs' ),
-      // IMPORTANT: you must run `npm install` in the directory for this assignment
+      // IMPORTANT: you must run `npm install` in the directory 
       // to install the mime library used in the following line of code
       mime = require( 'mime' ),
       port = 3000,
@@ -33,7 +33,19 @@ const handleGet = function( request, response ) {
     sendFile(response, filename)
   }
   else {
-    sendFile( response, dir + filename )
+    var shortfile = filename.split('?')
+    if (shortfile.length > 1) {
+      var newTarget = shortfile[1].split('=')[1]
+      fs.readFile('./rooms.json', 'utf8', function(err, contents) {
+        appdata = JSON.parse ( contents ) 
+        for ( var i = 0; i < appdata.rooms.length; i++) {
+          if (appdata.rooms[i].id == newTarget) {
+            target = appdata.rooms[i]
+          }
+        }
+      })
+    }
+    sendFile( response, dir + shortfile[0] )
   }
 }
 
@@ -57,19 +69,18 @@ const findTarget = function( request, response ) {
   request.on( 'end', function() {
     var appdata;
     fs.readFile('./rooms.json', 'utf8', function(err, contents) {
-      appdata = JSON.parse (contents )  
+      appdata = JSON.parse ( contents )  
       var entry = JSON.parse(dataString)
       for ( var i = 0; i < appdata.rooms.length; i++) {
-        if (appdata.rooms[i].title === entry.title) {
+        if (appdata.rooms[i].page_title === entry.page_title) {
           target = appdata.rooms[i]
           response.writeHead( 200, "OK", {"Content-Type":"application/json"} )
-          response.end( /*JSON.stringify(appdata.rooms[i]*/ )
+          response.end( JSON.stringify( target.page_type ))
         }
       }
     })
-  })
-  //console.log("you're a failure")
-  // you should add an error case dipshit
+  }) 
+  // TO-DO: Error case
 }
 
 const getdata = function( response ) {
