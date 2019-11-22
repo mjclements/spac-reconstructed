@@ -26,7 +26,7 @@ function populate ( json ) {
   }
 }
 
-window.onload = function() {s
+window.onload = function() {
   fetch('getTarget', {
     method:'GET'
   }).then(function (response) {
