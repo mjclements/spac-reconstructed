@@ -19,13 +19,13 @@ const server = http.createServer( function( request, response ) {
 const handleGet = function( request, response ) {
   const filename = request.url.slice( 1 )
   if ( request.url === '/' ) {
+    target = ""
     sendFile( response, dir +'index.html' )
   } 
   else if ( request.url == '/getdata' ) {
     getdata( response )
   }
   else if (request.url == '/getTarget') {
-    console.log("here")
     response.writeHead( 200, "OK", {"Content-Type":"application/json"} )
     response.end( JSON.stringify( target ))
   }
