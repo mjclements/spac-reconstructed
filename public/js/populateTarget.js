@@ -1,35 +1,14 @@
-//import { getTarget } from './modelViewer.js';
-
-/*
-function collectTargetData( title ) {
-
-  var json = { "title": title },
-      body = JSON.stringify( json )
-
-  fetch('/findTarget', {
-    method: 'GET',
-    body
-  }).then(function (response) {
-      console.log(response)
-      return response.json()
-    }).then(function (json) {
-        console.log(json)
-        populate( json )
-      })
-}
-*/
 
 function populate ( json ) {
-  console.log("hi")
-  console.log( json )
+
+  document.getElementsByClassName("title")[0].innerHTML = json.title
+  document.getElementsByClassName("story-title")[0].innerHTML = json.story_title
+  document.getElementsByClassName("scrollable-story")[0].append(json.story)
+  document.getElementsByClassName("second-row")[0].src = json.image
+
 }
 
 window.onload = function() {
-  console.log("heyyyyyyyyy")
-
-  //var target = getTarget()
-  //console.log( "hi im the target" + target )
-  console.log(window.location.pathname)
 
   fetch('getTarget', {
     method:'GET'
@@ -37,9 +16,7 @@ window.onload = function() {
     console.log( response ) 
     return response.json()
   }).then(function(json) {
-    console.log( json )
+    //console.log( json )
     populate( json )
   })
-
-  //populate( target )
 }

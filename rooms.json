@@ -3,9 +3,23 @@
     {
       "title":"ZENEL'S CELL",
       "type":"360_room",
-      "story_title":"hello",
-      "story":"hello",
-      "image":"hello"
+      "story_title":"Sleeping in Spaç",
+      "story":"<p>According to Zenel, there were 54 people sharing this room. On this side of the room you had 10 beds and 3 levels so 30 people would sleep on one wall. And then you had an additional 6 beds here multiplied by 3 three levels. So 18 persons plus 30 is 48. And then here there were double beds with 3 levels so it’s 6 additional persons. So 54 total persons.<\/p><p>It was possible because there was only 60 cm of width, so you would need to sleep on your side, otherwise you would end up touching another person. <\/p><p>Depending on where you were, like 1st, 2nd, 3rd level, there would be different smells. Because you can imagine that many persons after having worked all day, you can imagine a bit how it would have smelled.<//p><p>In the morning, there was a courier who would go around and tell everyone to get up. This person would go around at 5:00. Zenel says he created this habit of walking up a bit early, at about 4:45 to be able to go with a bit more comfort to the toilets to clean himself before he had to go to work. Because if you wake up later, he said, then you will be like with 300 other people waiting in line to get access to the toilets, where there were 10 water taps and 15 toilets where you could go in the morning. <//p>",
+      "image":"https://cdn.pannellum.org/2.5/pannellum.htm#panorama=https%3A//i.imgur.com/lCA2tj3.jpg&title=Nice&author=mjc"
+    },
+    {
+      "title":"Family Meeting Room",
+      "type":"360_room",
+      "story_title":"hello2",
+      "story":"hello2",
+      "image":"hello2"
+    },
+    {
+      "title":"Propaganda",
+      "type":"360_room",
+      "story_title":"hello2",
+      "story":"hello2",
+      "image":"hello2"
     }
   ]
 }

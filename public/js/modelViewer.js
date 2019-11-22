@@ -26,7 +26,7 @@ function init () {
   cameraTarget = new THREE.Vector3(100, 15, 0)
 
   scene = new THREE.Scene()
-  scene.background = new THREE.Color(0xebf8fc)
+  scene.background = new THREE.Color( 0xebf8fc )
 
   document.addEventListener('mousemove', onDocumentMouseMove, false)
   document.addEventListener('click', onDocumentMouseClick, false)
@@ -73,8 +73,6 @@ function init () {
 }
 
 function collectTargetData( ) {
-  //console.log("collecting target data")
-
   const json = { "title": target },
       body = JSON.stringify( json );
 
@@ -84,11 +82,6 @@ function collectTargetData( ) {
   }).then(function (response) {
       console.log(response)
       window.location = 'target.html'
-      //return response.json()
-    //}).then(function (json) {
-   //     console.log(json)
-        //target = json
-// + target//element.target
       })
   return false
 }
@@ -97,7 +90,6 @@ function onDocumentMouseMove (event) {
   event.preventDefault()
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1.07
-  // console.log(window.innerHeight * 0.1)
 }
 
 function onDocumentMouseClick (event) {
@@ -108,11 +100,6 @@ function onDocumentMouseClick (event) {
 
       target = element.target
       collectTargetData()
-
-      //console.log("data should be collected")
-      //console.log( target )
-
-
 
       // x_pos = gui.add(INTERSECTED.position, 'x', -100, 100).name('x_pos').listen()
       // y_pos = gui.add(INTERSECTED.position, 'y', -100, 100).name('y_pos').listen()
