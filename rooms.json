@@ -37,15 +37,21 @@
       "story_content":"<p>At one point there was volleyball and they would be allowed to play sometimes, but this place was known as a dangerous place. They would be called up by the administration and everyone would line up here. Whenever that would happen something bad would happen. They knew that because the policemen would be over there pointing guns at them from the terrace and the investigation unit from Reps would come. They would come among the people here and catch the person that they needed to bring back with them. That was a very important moment, because you never knew who would be taken away. It could be you, it could be a close friend of yours. You never knew, so it was an important moment.</p><p>There was a moment when they were called up here and the police took someone who was charged for high treason against the state of Albania while in prison. You can imagine how he could commit high treason here. And he was courageous enough to shout here in the middle of everyone “Down with the spies and down with the people who are playing with the spies!” </p>",
       "image_1":"assets/images/volleyball.JPG",
       "hotspots": [
-        { 
+        {
           "pitch": 19.280976304495713,
           "yaw": -82.78214471698274,
           "type": "info",
           "text": "Nature's Law",
           "URL": "/two_photo.html?target=5"
-        }
+        },
+        {   "pitch": 4.85604237006366,
+            "yaw": -59.053079012478825,
+            "type": "info",
+            "text": "The Small Gate to Hell",
+            "URL": "/two_photo.html?target=7"
+            }
       ],
-      "find_hotspots":false
+      "find_hotspots": true
     },
     {
       "id":4,
@@ -60,7 +66,7 @@
           "type": "info",
           "text": "Visitation in Wintertime",
           "URL": "/photo_360.html?id=1"
-      } 
+      }
       ],
       "find_hotspots":false
     },
@@ -86,9 +92,29 @@
             "type": "info",
             "text": "Propaganda",
             "URL": "/propaganda.html"
-            } 
-      ],
+            }
+
+	 ],
       "find_hotspots":false
-    }
+    },
+	{
+      "id":7,
+      "page_title":"The Small Gate",
+      "page_type":"two_photo",
+      "story_title":"Small Gate of Hell",
+      "story_content": "<p>\"The prisioners had the right to go until the black field garden and not to pass the small gate. With the prisioners could go cross the gate only when beeing called by the police. This gate was surveyed by an officer with a carabine ( gun). Up to the big field , the prisioners lined up just as they came out of the Van , the one that came for the first time in the camp , or the once that came from the hospital, for the dungeon or from the repuninishments. The small gate was the first that you could pass through when a friend was beeing realised.until then we had the right to accompany him and then we splited. As he passed through the gate he seemed another person , it was free still without coming out the big gate of the camp . For us the small gate was more important than the big gate of camp entry. The big metallic gate we see it from the distance. Although it was the first or the last door with chains ( the first when you came in and the last when you came out ), for us it had more the power of an symbol. That we disdained. That we could even ignore. But the small door no. This was our door as it was of the police. Because this didn't had any locker's. This was without a chain , without a key.</p><p>If you past through that gate you could get killed, but that wasn't important , the important thing was that it wasn't closed.</p><p>That was the small gate of the hell .</p><p>All my life I have tried to picture the hell's gate and it was here in camp. It was very simple and very ordinary. The extra ordinary was in it's power. It's power was that it divided 2 worlds. The world of pain with the world of happiness. This small gate rushed us back in years .it was takingour lives slowly, it gaves us hope and the news. A lot of painful news and sometimes happy one's. It was the gate where you couldn't knock. It divided our lives in two.\" - Max Velos</p>",
+      "image_1":"/assets/images/gate.png",
+      "image_2":"/assets/images/black.png"
+    },
+    {
+        "id":8,
+        "page_title":"The Entrance",
+        "page_type":"photo_360",
+        "story_title":"Arrival at Spaç",
+        "story_content": "<p>This was the main gate to Spaç. Prisoners would arrive here in a van. Some prisoners have said there was no light in the van, and hardly any ventillation.</p> The van would drive in through the first gate (up the hill), wait for it to close, and then let the prisoners out. They were tied the whole time. Finally, they would be taken through the second gate, and into the prison where they would be living.</p>",
+        "image_1":"/assets/images/arrival.jpg",
+        "hotspots": [],
+        "find_hotspots":false
+      }
   ]
 }
