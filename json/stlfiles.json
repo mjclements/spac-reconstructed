@@ -9,7 +9,7 @@
     "y_rot" : "225",
     "z_rot" : "0",
     "scale" : ".02",
-    "file_name" : "assets/stl/ga3a_rotated_with_foundation.STL",
+    "file_name" : "building_ga3a.stl",
     "target" : {
       "id":4,
       "page_type":"photo_360"
@@ -23,7 +23,7 @@
      "y_rot" : "0",
      "z_rot" : "0",
      "scale" : ".02",
-     "file_name" : "assets/stl/prison_room_1_floor_1.STL",
+     "file_name" : "cell_1.stl",
      "target" : {
        "id":0,
        "page_type":"photo_360"
@@ -41,7 +41,7 @@
       "y_rot" : "0",
       "z_rot" : "0",
       "scale" : ".02",
-      "file_name" : "assets/stl/full_prison_assem_with_foundation.STL"
+      "file_name" : "main_cellblock.stl"
     },
     {
       "x_pos" : "0",
@@ -51,7 +51,7 @@
       "y_rot" : "0",
       "z_rot" : "0",
       "scale" : ".02",
-      "file_name" : "assets/stl/building_ga6_with_foundation.STL"
+      "file_name" : "building_ga6.stl"
     },
     {
       "x_pos" : "70",
@@ -61,7 +61,7 @@
       "y_rot" : "-10",
       "z_rot" : "0",
       "scale" : ".02",
-      "file_name" : "assets/stl/buildingga5_with_foundation.STL"
+      "file_name" : "building_ga5.stl"
     },
     {
       "x_pos" : "210",
@@ -71,7 +71,7 @@
       "y_rot" : "225",
       "z_rot" : "",
       "scale" : ".02",
-      "file_name" : "assets/stl/ga3b_with_foundation.STL"
+      "file_name" : "building_ga3b.stl"
     },
     {
       "x_pos" : "150",
@@ -81,7 +81,7 @@
       "y_rot" : "45",
       "z_rot" : "0",
       "scale" : ".02",
-      "file_name" : "assets/stl/ga3c_with_foundation.STL"
+      "file_name" : "building_ga3c.stl"
     },
     {
       "x_pos" : "70",
@@ -91,7 +91,7 @@
       "y_rot" : "180",
       "z_rot" : "0",
       "scale" : "2",
-      "file_name" : "assets/stl/platform.stl"
+      "file_name" : "rollcall_platform.stl"
 	}
   ],
   "orbs" :
@@ -123,7 +123,7 @@
 	"size" : ".15",
 	"target" : {
         "id":8,
-	"page_type":"photo_360"
+	      "page_type":"photo_360"
      }
 	}
     ],
@@ -136,7 +136,7 @@
        "x_rot" : "0",
        "y_rot" : "120",
        "z_rot" : "0",
-       "file_name" : "assets/stl/experimental.stl",
+       "file_name" : "terrain_version_4.stl",
        "scale" : "27.66666666",
        "color" : "0x287028",
        "texture" : "satelitephoto.png"

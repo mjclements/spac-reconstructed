@@ -17,70 +17,51 @@ const server = http.createServer( function( request, response ) {
 })
 
 const handleGet = function( request, response ) {
+  //console.log(request.url)
   const filename = request.url.slice( 1 )
-  if ( request.url === '/' ) {
+  if ( request.url == '/' || request.url == '/index.html' ) {
     target = ""
-    sendFile( response, dir +'index.html' )
+    sendFile( response, 'index.html' )
   } 
   else if ( request.url == '/getdata' ) {
-    getdata( response )
+    response.writeHead( 200, "OK", {"Content-Type":"application/json"})
+    fs.readFile('./json/stlfiles.json', 'utf8', function(err, contents) {
+      response.end( contents );
+    })
   }
-  else if (request.url == '/getTarget') {
+  else if ( request.url == '/getTarget' ) {
     response.writeHead( 200, "OK", {"Content-Type":"application/json"} )
     response.end( JSON.stringify( target ))
   }
-  else if ( request.url.startsWith('/src/', 0) || request.url.startsWith('/assets/', 0)  ) {
-    sendFile(response, filename)
+  else if (request.url.endsWith( '.png' ) || request.url.endsWith( '.jpg' )) {
+    sendFile( response, './assets/images/' + filename )
+  }
+  else if (request.url.endsWith( '.stl')) {
+    sendFile( response, './assets/stl/' + filename )
+  }
+  else if ( request.url.startsWith( '/src/', 0 )) {
+    sendFile( response, filename )
   }
   else {
-    var shortfile = filename.split('?')
-    if (shortfile.length > 1) {
-      var newTarget = shortfile[1].split('=')[1]
-      fs.readFile('./rooms.json', 'utf8', function(err, contents) {
-        appdata = JSON.parse ( contents ) 
-        for ( var i = 0; i < appdata.rooms.length; i++) {
-          if (appdata.rooms[i].id == newTarget) {
-            target = appdata.rooms[i]
+    var arguments = filename.split('?')
+    if ( arguments.length > 1 ) {
+      var newTargetId = arguments[1].split('=')[1]
+      fs.readFile( './json/rooms.json', 'utf8', function( err, contents ) {
+        var pageData = JSON.parse ( contents ) 
+        for ( var i = 0; i < pageData.rooms.length; i++ ) {
+          if ( pageData.rooms[i].id == newTargetId ) {
+            target = pageData.rooms[i]
           }
         }
       })
     }
-    sendFile( response, dir + shortfile[0] )
+    sendFile( response, dir + arguments[0] )
   }
 }
 
 const handlePost = function( request, response ) {
-   if ( request.url == '/findTarget' ) {
-    findTarget( request, response )
-  }
-  else {
-    response.writeHeader( 404 )
-    response.end( '404 Error: File Not Found' )
-  }
-}
-
-const findTarget = function( request, response ) {
-  let dataString = ''
-
-  request.on( 'data', function( data ) {
-    dataString += data 
-  })
-
-  request.on( 'end', function() {
-    var appdata;
-    fs.readFile('./rooms.json', 'utf8', function(err, contents) {
-      appdata = JSON.parse ( contents )  
-      var entry = JSON.parse(dataString)
-      for ( var i = 0; i < appdata.rooms.length; i++) {
-        if (appdata.rooms[i].page_title === entry.page_title) {
-          target = appdata.rooms[i]
-          response.writeHead( 200, "OK", {"Content-Type":"application/json"} )
-          response.end( JSON.stringify( target.page_type ))
-        }
-      }
-    })
-  }) 
-  // TO-DO: Error case
+  response.writeHeader( 404 )
+  response.end( '404 Error: File Not Found' )
 }
 
 const getdata = function( response ) {
@@ -97,12 +78,10 @@ const sendFile = function( response, filename ) {
 
      // if the error = null, then we've loaded the file successfully
      if( err === null ) {
-       // status code: https://httpstatuses.com
        response.writeHeader( 200, { 'Content-Type': type })
        response.end( content )
      }
      else {
-       // file not found, error code 404
        response.writeHeader( 404 )
        response.end( '404 Error: File Not Found' )
      }
