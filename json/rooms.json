@@ -37,7 +37,7 @@
       "story_content":"<p>At one point there was volleyball and they would be allowed to play sometimes, but this place was known as a dangerous place. They would be called up by the administration and everyone would line up here. Whenever that would happen something bad would happen. They knew that because the policemen would be there pointing guns at them from the terrace and the investigation unit from Reps would come. They would come among the people here and catch the person that they needed to bring back with them. That was a very important moment, because you never knew who would be taken away. It could be you, it could be a close friend of yours. You never knew, so it was an important moment.</p><p>There was a moment when they were called up here and the police took someone who was charged for high treason against the state of Albania while in prison. You can imagine how he could commit high treason here. And he was courageous enough to shout here in the middle of everyone “Down with the spies and down with the people who are playing with the spies!” </p>",
       "image_1":"volleyball.jpg",
       "hotspots": [
-        { 
+        {
           "pitch": 19.280976304495713,
           "yaw": -82.78214471698274,
           "type": "info",
@@ -66,7 +66,7 @@
           "type": "info",
           "text": "Visitation in Wintertime",
           "URL": "/photo_360.html?id=1"
-      } 
+      }
       ],
       "find_hotspots":false
     },
@@ -83,7 +83,7 @@
             "type": "info",
             "text": "Propaganda",
             "URL": "/two_photo.html?id=2"
-            } 
+            }
       ],
       "find_hotspots":false
     },
@@ -113,6 +113,15 @@
         "image_1":"arrival.jpg",
         "hotspots": [],
         "find_hotspots":false
-      }
+      },
+      {
+	"id":9,
+	"page_title":"The Mine Entrance",
+	"page_type":"two_photo",
+	"story_title":"A Concert in the Mines",
+	"story_content":"<p>I was in the prison with a famous albanian tenor its name was Stavri Rafaeli. You probably heard of it. He has studied for scenography in Hungary but he has also studied in Russia for tenor. He was a completed tenor with a great career in Albanian operatic scenes.</p><p>New Year's Eve when all the people celebrated around the world we were summoned in the work. We were inside the gallery at twelve o'clock one o'clock of the New year. We were gathered in secret in a area and we decided to create a scent with miner candles (carbide flame) and we created one of the most original concerts. I started singing sofft songs. I organized 10 prisoners to keep up with the rhythm (applauding) and I sang some Albanian and Italian songs.</p><p>After me was Stavri Rafaeli that sang the Traviata and we were accompanied him with applauding. After him was Hysen Xhani, he lives nowadays in Lapraka and he works as a painter.</p><p>He sang Tirana's folk music and we all applauded. So it was a very original , diversified concert without any instruments only with our applause.</p><p>This was the only way to sing.</p>",
+	"image_1":"mine1.png",
+	"image_2":"mine2.png"
+	}
   ]
 }

@@ -125,7 +125,27 @@
         "id":8,
 	      "page_type":"photo_360"
      }
-	}
+	},
+	{
+        "x_pos" : "30",
+        "y_pos" : "15",
+        "z_pos" : "35",
+        "size" : ".15",
+        "target" : {
+        "id":8,
+              "page_type":"photo_360"
+     }
+	},
+       {
+        "x_pos" : "-140",
+        "y_pos" : "15",
+        "z_pos" : "-5",
+        "size" : ".20",
+        "target" : {
+        "id":9,
+              "page_type":"two_photo"
+     }
+        }
     ],
     "terrain" :
      [
