@@ -19,7 +19,7 @@ function populate ( json ) {
       console.log("hi")
       document.getElementsByClassName("title")[0].innerHTML = json.page_title
       document.getElementsByClassName("story-title")[0].innerHTML = json.story_title
-      document.getElementsByClassName("scrollable-story")[0].append(json.story_content)
+      document.getElementsByClassName("scrollable-story")[0].innerHTML += json.story_content
       document.getElementById("image_1").src = json.image_1 //this needs to change
       document.getElementById("image_2").src = json.image_2 // this too, add the "/assets/images/"
       break
