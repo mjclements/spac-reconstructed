@@ -27,7 +27,7 @@ function populate ( json ) {
 }
 
 window.onload = function() {
-  fetch('getTarget', {
+  fetch('getTarget' + '?' + document.location.toString().split('?')[1], {
     method:'GET'
   }).then(function (response) {
     console.log( response ) 

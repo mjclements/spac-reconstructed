@@ -29,7 +29,20 @@ const handleGet = function( request, response ) {
       response.end( contents );
     })
   }
-  else if ( request.url == '/getTarget' ) {
+  else if ( request.url.startsWith('/getTarget') ) {
+	var arguments = request.url.split('?')[1]
+    if ( arguments.length > 1 ) {
+      var newTargetId = arguments[1].split('=')[1]
+      fs.readFile( './json/rooms.json', 'utf8', function( err, contents ) {
+        var pageData = JSON.parse ( contents )
+        for ( var i = 0; i < pageData.rooms.length; i++ ) {
+          if ( pageData.rooms[i].id == newTargetId ) {
+            target = pageData.rooms[i]
+          }
+        }
+      })
+    }
+
     response.writeHead( 200, "OK", {"Content-Type":"application/json"} )
     response.end( JSON.stringify( target ))
   }
