@@ -1,0 +1,165 @@
+{
+  "clickable":
+  [
+    {
+    "x_pos" : "165",
+    "y_pos" : "15",
+    "z_pos" : "-47",
+    "x_rot" : "0",
+    "y_rot" : "225",
+    "z_rot" : "0",
+    "scale" : ".02",
+    "file_name" : "building_ga3a.stl",
+    "target" : {
+      "id":4,
+      "page_type":"photo_360"
+     }
+    },
+    {
+     "x_pos" : "0",
+     "y_pos" : "0",
+     "z_pos" : "0",
+     "x_rot" : "0",
+     "y_rot" : "0",
+     "z_rot" : "0",
+     "scale" : ".02",
+     "file_name" : "cell_1.stl",
+     "target" : {
+       "id":0,
+       "page_type":"photo_360"
+      }
+    }
+  ],
+  "not_clickable" :
+  [
+
+    {
+      "x_pos" : "0",
+      "y_pos" : "0",
+      "z_pos" : "0",
+      "x_rot" : "0",
+      "y_rot" : "0",
+      "z_rot" : "0",
+      "scale" : ".02",
+      "file_name" : "main_cellblock.stl"
+    },
+    {
+      "x_pos" : "0",
+      "y_pos" : "15",
+      "z_pos" : "-40",
+      "x_rot" : "0",
+      "y_rot" : "0",
+      "z_rot" : "0",
+      "scale" : ".02",
+      "file_name" : "building_ga6.stl"
+    },
+    {
+      "x_pos" : "70",
+      "y_pos" : "15",
+      "z_pos" : "-20",
+      "x_rot" : "0",
+      "y_rot" : "-10",
+      "z_rot" : "0",
+      "scale" : ".02",
+      "file_name" : "building_ga5.stl"
+    },
+    {
+      "x_pos" : "210",
+      "y_pos" : "10",
+      "z_pos" : "-90",
+      "x_rot" : "0",
+      "y_rot" : "225",
+      "z_rot" : "",
+      "scale" : ".02",
+      "file_name" : "building_ga3b.stl"
+    },
+    {
+      "x_pos" : "150",
+      "y_pos" : "22",
+      "z_pos" : "-60",
+      "x_rot" : "0",
+      "y_rot" : "45",
+      "z_rot" : "0",
+      "scale" : ".02",
+      "file_name" : "building_ga3c.stl"
+    },
+    {
+      "x_pos" : "70",
+      "y_pos" : "-5",
+      "z_pos" : "20",
+      "x_rot" : "0",
+      "y_rot" : "180",
+      "z_rot" : "0",
+      "scale" : "2",
+      "file_name" : "rollcall_platform.stl"
+	}
+  ],
+  "orbs" :
+   [
+     {
+       "x_pos" : "30",
+       "y_pos" : "8",
+       "z_pos" : "-30",
+       "size" : ".15",
+       "target" : {
+        "id":3,
+        "page_type":"photo_360"
+       }
+     },
+     {
+       "x_pos" : "166",
+       "y_pos" : "20",
+       "z_pos" : "-60",
+       "size" : ".15",
+       "target" : {
+        "id":8,
+        "page_type":"photo_360"
+       }
+     },
+	{
+	"x_pos" : "30",
+	"y_pos" : "15",
+	"z_pos" : "35",
+	"size" : ".15",
+	"target" : {
+        "id":8,
+	      "page_type":"photo_360"
+     }
+	},
+	{
+        "x_pos" : "30",
+        "y_pos" : "15",
+        "z_pos" : "35",
+        "size" : ".15",
+        "target" : {
+        "id":8,
+              "page_type":"photo_360"
+     }
+	},
+       {
+        "x_pos" : "-140",
+        "y_pos" : "15",
+        "z_pos" : "-5",
+        "size" : ".20",
+        "target" : {
+        "id":9,
+              "page_type":"two_photo"
+     }
+        }
+    ],
+    "terrain" :
+     [
+      {
+       "x_pos" : "140",
+       "y_pos" : "127",
+       "z_pos" : "-80",
+       "x_rot" : "0",
+       "y_rot" : "120",
+       "z_rot" : "0",
+       "file_name" : "terrain_version_4.stl",
+       "scale" : "27.66666666",
+       "color" : "0x287028",
+       "texture" : "satelitephoto.png"
+      }
+     ]
+}

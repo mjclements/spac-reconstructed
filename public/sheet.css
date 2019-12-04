@@ -1,0 +1,17 @@
+/* myStyle.css */
+
+*{font-family: Calibri;}
+body, html {background: transparent; width: 100%; height: 100%; margin: 0; padding: 0; }
+.row-container {background: transparent; display: flex; width: 100%; height: 100%; flex-direction: column; background-color: black; overflow: hidden; position: absolute; top: 0; left:0;}
+.first-row {background: RGB(197,116,58); display: flex; flex-direction: row; background-color: red; height: 10vh;}
+.second-row {display: flex; flex-grow: 1; border: none; margin: 0; padding: 0; }
+.viewer {flex-grow: 1; border: none; margin: 0; padding: 0; }
+.scrollable-story {     padding: 40px 30px 50px 30px; color: rgb(147,147,147); z-index: 99 !important; position: absolute; left: 4%; top: 11%; max-width: 350px; height: 70vh; overflow-y: scroll; margin: 8px; background-color:rgba(0,0,0,0.8); scrollbar-width: none; }
+.back-button {text-align: center; flex-grow: 2; border: none; margin: 0; padding: 0; background-color: black; color: rgb(24,00,12); font-size: 8vh;}
+.title {text-align: center; flex-grow: 7; border: none; margin: 0; padding: 0; background-color: RGB(197,116,58); color: white; font-size: 8vh;}
+.logo {background-color: rgb(197,116,58); background: transparent; height: 10vh;}
+.story-title {height: 40px; font-size: 30px; color: RGB(197,116,58);}
+a {color:#C59C74;}         /* Unvisited link  */
+a:visited {color:#C59C74;} /* Visited link    */
+a:hover {color:#C59C74;}   /* Mouse over link */
+a:active {color:#C59C74;}  /* Selected link   */
